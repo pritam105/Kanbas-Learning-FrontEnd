@@ -6,7 +6,7 @@ import TOC from "./TOC";
 export default function Labs() {
   return (
     <div>
-      <h1>Pritam Mane</h1>
+      <h1>Pritam Anand Mane</h1>
       <h1>Labs</h1>
       <TOC />
       <Routes>
