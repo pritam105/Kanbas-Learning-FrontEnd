@@ -18,12 +18,13 @@ export default function Dashboard() {
                         Full Stack software developer
                     </p>
                     <button> Go </button>
+                    <br/>
                     </div>
                 </Link>
             </div>
             <div className="wd-dashboard-course">
                 <Link className="wd-dashboard-course-link"
-                        to="/Kanbas/Courses/1234/Home">
+                        to="/Kanbas/Courses/1235/Home">
                     <img alt="logo" src="/images/ML.jpg" width={200} />
                     <div>
                     <h5>
@@ -33,12 +34,13 @@ export default function Dashboard() {
                         Machine Learning
                     </p>
                     <button> Go </button>
+                    <br/>
                     </div>
                 </Link>
             </div>
             <div className="wd-dashboard-course"> 
                 <Link className="wd-dashboard-course-link"
-                        to="/Kanbas/Courses/1234/Home">
+                        to="/Kanbas/Courses/1236/Home">
                     <img alt="logo" src="/images/algo.jpg" width={200} />
                     <div>
                     <h5>
@@ -48,12 +50,13 @@ export default function Dashboard() {
                         Algorithms
                     </p>
                     <button> Go </button>
+                    <br/>
                     </div>
                 </Link>            
             </div>
             <div className="wd-dashboard-course"> 
                 <Link className="wd-dashboard-course-link"
-                        to="/Kanbas/Courses/1234/Home">
+                        to="/Kanbas/Courses/1237/Home">
                     <img alt="logo" src="/images/designpatterns.jpg" width={200} />
                     <div>
                     <h5>
@@ -63,9 +66,58 @@ export default function Dashboard() {
                         Design Patterns
                     </p>
                     <button> Go </button>
+                    <br/>
                     </div>
                 </Link>            
             </div>
+            <div className="wd-dashboard-course"> 
+                <Link className="wd-dashboard-course-link"
+                        to="/Kanbas/Courses/1238/Home">
+                    <img alt="logo" src="/images/nlp.webp" width={200} />
+                    <div>
+                    <h5>
+                        CS1238 NLP
+                    </h5>
+                    <p className="wd-dashboard-course-title">
+                        NLP
+                    </p>
+                    <button> Go </button>
+                    <br/>
+                    </div>
+                </Link>            
+            </div> 
+            <div className="wd-dashboard-course"> 
+                <Link className="wd-dashboard-course-link"
+                        to="/Kanbas/Courses/1239/Home">
+                    <img alt="logo" src="/images/cyber.jpg" width={200} />
+                    <div>
+                    <h5>
+                        CS1239 Cybersecurity
+                    </h5>
+                    <p className="wd-dashboard-course-title">
+                        CyberSecurity
+                    </p>
+                    <button> Go </button>
+                    <br/>
+                    </div>
+                </Link>            
+            </div>
+            <div className="wd-dashboard-course"> 
+                <Link className="wd-dashboard-course-link"
+                        to="/Kanbas/Courses/1230/Home">
+                    <img alt="logo" src="/images/dl.png" width={200} />
+                    <div>
+                    <h5>
+                        CS1230 Deep Learning
+                    </h5>
+                    <p className="wd-dashboard-course-title">
+                        Deep Learning
+                    </p>
+                    <button> Go </button>
+                    <br/>
+                    </div>
+                </Link>            
+            </div>                                   
           </div>
         </div>
     );    
