@@ -32,22 +32,16 @@ export default function Assignments() {
               </div>
               <ul id="wd-assignment-list" className="list-group rounded-0">
                 <li className="wd-assignment-list-item wd-lesson list-group-item p-3 ms-0 ps-1">
-                  <div className="d-inline-flex">
-                    <div className="align-self-center">
                       <BsGripVertical className="me-3 fs-3" />
                       <TfiWrite className="me-4 fs-3 "/>
-                    </div>
-                    <div>
                       <a className="wd-assignment-link"
                         href="#/Kanbas/Courses/1234/Assignments/123">
                         A1 - ENV + HTML
                       </a> <br/>
                       <span className="text-danger">Multiple Modules</span> | <b>Not available until</b> May 6 at 12:00am |
                       <br/><b>Due</b> May 13 at 11:59pm | 100 pts
-                    </div>
-                  </div>
                   <LessonControlButtons/>
-                </li>               
+                </li>
                 <li className="wd-assignment-list-item wd-lesson list-group-item p-3 ms-0 ps-1">
                   <div className="d-inline-flex">
                     <div className="align-self-center">
