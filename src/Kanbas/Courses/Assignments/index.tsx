@@ -7,21 +7,19 @@ import { IoEllipsisVertical } from "react-icons/io5";
 export default function Assignments() {
     return (
       <div id="wd-assignments">
-        <div className="d-inline-flex align-items-center">
-          <CiSearch />
+        <div className="d-inline-flex align-items-stretch">
+          <span className="input-group-text border border-end-0 rounded-0 bg-white"><CiSearch className="fs-4"/></span>
           <input
             id="wd-search-assignment"
-            className="ml-3"
+            type="search"
+            className="form-control ml-3 border-start-0 border rounded-0 rounded-left"
             placeholder="Search..."/>
         </div>
         <button id="wd-add-assignment" className="btn btn-md btn-danger me-1 float-end">+ Assignment</button>
         <button id="wd-add-assignment-group" className="btn btn-md me-1 bg-secondary float-end">+ Group</button>
         <br/>
         <br/>
-{/*         
-        <h3 id="wd-assignments-title">
-          ASSIGNMENTS 40% of Total <button>+</button>
-        </h3> */}
+
         <ul className="list-group rounded-0">
           <li className="list-group-item p-0 mb-5 fs-5 border-gray">
               <div id = "wd-assignments-title" className="p-3 ps-2 pb-4 bg-secondary"> 

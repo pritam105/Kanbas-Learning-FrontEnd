@@ -41,10 +41,10 @@ export default function AssignmentEditor() {
         <div className="row mb-3 text-end">
           <label htmlFor="wd-group" className="col-sm-4 col-form-label">Assignment Group</label>
           <div className="col-sm-8">
-            <select id="wd-group" className="form-control">
+            <select id="wd-group" className="form-select">
+              <option selected value="Assignments">Assignments</option>
               <option value="Quiz">Quiz</option>
               <option value="Tests">Test</option>
-              <option selected value="Assignments">Assignments</option>
             </select>
           </div>
         </div>
@@ -53,10 +53,10 @@ export default function AssignmentEditor() {
         <div className="row mb-3 text-end">
           <label htmlFor="wd-display-grade-as" className="col-sm-4 col-form-label">Display Grade as</label>
           <div className="col-sm-8">
-            <select id="wd-display-grade-as" className="form-control">
+            <select id="wd-display-grade-as" className="form-select">
+              <option selected value="Percentage">Percentage</option>
               <option value="RawScore">Raw Score</option>
               <option value="Class">Class</option>
-              <option selected value="Percentage">Percentage</option>
             </select>
           </div>
         </div>
@@ -64,18 +64,17 @@ export default function AssignmentEditor() {
         <div className="row mb-3">
           <label htmlFor="wd-submission-type" className="col-sm-4 col-form-label text-end">Submission Type</label>
           <div className="col pt-2 border rounded-2 me-3 ms-3">
-            <select id="wd-submission-type" className="form-control">
-              <option value="Offline">Offline</option>
+            <select id="wd-submission-type" className="form-select">
               <option selected value="Online">Online</option>
+              <option value="Offline">Offline</option>
             </select>
 
-            <div className="d-flex justify-content-start m-2 ms-1">Online Entry Options</div>
+            <div className="d-flex justify-content-start m-2 ms-1 fw-bold">Online Entry Options</div>
 
-            <div className="col-sm-8">
+            <div className="col-sm-8 ms-1">
               <div className="form-check">
                 <input type="checkbox" id="wd-text-entry" className="form-check-input" />
-                <label htmlFor="wd-text-entry" className="form-check-label">
-                  Text Entry</label>
+                <label htmlFor="wd-text-entry" className="form-check-label ms-2">Text Entry</label>
               </div>
               <div className="form-check">
                 <input type="checkbox" id="wd-website-url" className="form-check-input" defaultChecked />
@@ -102,7 +101,7 @@ export default function AssignmentEditor() {
           <label htmlFor="wd-assign-to" className="col-sm-4 col-form-label text-end">Assign</label>
           <div className="col pt-2 border rounded-2 me-3 ms-3">
             <label htmlFor="wd-assign-to" className="col-form-label m-2 ms-1 mb-0 fw-bold">Assign to</label>
-            <input id="wd-assign-to" className="form-control" value="Everyone" readOnly />
+            <input id="wd-assign-to" className="form-select" value="Everyone" />
             
             <label htmlFor="wd-due-date" className="col-form-label m-2 ms-1 mb-0 fw-bold">Due</label>
             <input type="date" id="wd-due-date" className="form-control" defaultValue="2024-09-21" />
@@ -120,6 +119,7 @@ export default function AssignmentEditor() {
           </div>
         </div>
         <hr/>
+
         {/* Save and Cancel Buttons */}
         <div className="d-flex justify-content-end mt-3">
           <Link to="/Kanbas/Courses/1234/Assignments" className="btn btn-light me-2" id="wd-course-assignment-link">Cancel</Link>

@@ -9,17 +9,6 @@ import { FaBullhorn } from "react-icons/fa6";
 
 export default function CourseStatus() {
     return (
-      // <div id="wd-course-status">
-      //   <h2>Course Status</h2>
-      //   <button>Unpublish</button> <button>Publish</button> <br/> <br/>
-      //   <button>Import Existing Content</button> <br/>
-      //   <button>Import from Commons</button> <br/>
-      //   <button>Course Home Page</button> <br/>
-      //   <button>View Course Stream</button> <br/>
-      //   <button>New Announcement</button> <br/>
-      //   <button>New Analytics</button> <br/>
-      //   <button>View Course Notifications</button> 
-      // </div>
       <div id="wd-course-status" className="ms-3" style={{ width: "300px" }}>
         <h2>Course Status</h2>
         <div className="d-flex">
@@ -54,6 +43,7 @@ export default function CourseStatus() {
           <IoNotificationsOutline className="me-2 fs-5" /> View Course Notifications </button>        
 
         {/* Complete the rest of the buttons */}
+        {/* completed */}
       </div>      
   );
 }
