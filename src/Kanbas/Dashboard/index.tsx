@@ -4,11 +4,12 @@ export default function Dashboard() {
     return (
         <div id="wd-dashboard">
           <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
-          <h2 id="wd-dashboard-published">Published Courses (12)</h2> <hr />
-            <div id="wd-dashboard-courses" className="row">
+          <h2 id="wd-dashboard-published" className="ps-4">Published Courses (12)</h2>
+            <div id="wd-dashboard-courses" className="row ps-4">
+                <hr />
                 <div className="row row-cols-1 row-cols-md-5 g-4">
                     
-                    <div className="wd-dashboard-course col" style={{ width: "300px" }}>
+                    <div className="wd-dashboard-course col" style={{ width: "270px" }}>
                         <div className="card rounded-3 overflow-hidden">
                             <Link className="wd-dashboard-course-link text-decoration-none text-dark"
                                     to="/Kanbas/Courses/1234/Home">
@@ -18,7 +19,7 @@ export default function Dashboard() {
                                         CS1234 React JS
                                     </h5>
                                     <p className="wd-dashboard-course-title card-text">
-                                        Full Stack software developer
+                                        Fall24, S02
                                     </p>
                                     <button className="btn btn-primary"> Go </button>
                                 </div>
@@ -26,7 +27,7 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className="wd-dashboard-course col" style={{ width: "300px" }}>
+                    <div className="wd-dashboard-course col" style={{ width: "270px" }}>
                         <div className="card rounded-3 overflow-hidden">
                             <Link className="wd-dashboard-course-link text-decoration-none text-dark"
                                     to="/Kanbas/Courses/1234/Home">
@@ -36,7 +37,7 @@ export default function Dashboard() {
                                         CS1235 ML
                                     </h5>
                                     <p className="wd-dashboard-course-title card-text">
-                                        Machine Learning
+                                        Fall24, S01
                                     </p>
                                     <button className="btn btn-primary"> Go </button>
                                 </div>
@@ -44,17 +45,17 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className="wd-dashboard-course col" style={{ width: "300px" }}>
+                    <div className="wd-dashboard-course col" style={{ width: "270px" }}>
                         <div className="card rounded-3 overflow-hidden">
                             <Link className="wd-dashboard-course-link text-decoration-none text-dark"
                                     to="/Kanbas/Courses/1234/Home">
                                 <img src="/images/designpatterns.jpg" width="100%" height={160}/>
                                 <div className="card-body">
                                     <h5 className="wd-dashboard-course-title card-title">
-                                        CS1236 Design Patterns
+                                        CS126 Design Patterns
                                     </h5>
                                     <p className="wd-dashboard-course-title card-text">
-                                        Design Patterns
+                                        Fall24, S01
                                     </p>
                                     <button className="btn btn-primary"> Go </button>
                                 </div>
@@ -62,7 +63,7 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className="wd-dashboard-course col" style={{ width: "300px" }}>
+                    <div className="wd-dashboard-course col" style={{ width: "270px" }}>
                         <div className="card rounded-3 overflow-hidden">
                             <Link className="wd-dashboard-course-link text-decoration-none text-dark"
                                     to="/Kanbas/Courses/1234/Home">
@@ -72,7 +73,7 @@ export default function Dashboard() {
                                         CS1237 NLP
                                     </h5>
                                     <p className="wd-dashboard-course-title card-text">
-                                        NLP
+                                        Spring24, S03
                                     </p>
                                     <button className="btn btn-primary"> Go </button>
                                 </div>
@@ -80,7 +81,7 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className="wd-dashboard-course col" style={{ width: "300px" }}>
+                    <div className="wd-dashboard-course col" style={{ width: "270px" }}>
                         <div className="card rounded-3 overflow-hidden">
                             <Link className="wd-dashboard-course-link text-decoration-none text-dark"
                                     to="/Kanbas/Courses/1234/Home">
@@ -90,7 +91,7 @@ export default function Dashboard() {
                                         CS1238 CyberSecurity
                                     </h5>
                                     <p className="wd-dashboard-course-title card-text">
-                                        CyberSecurity
+                                        Spring24, S03
                                     </p>
                                     <button className="btn btn-primary"> Go </button>
                                 </div>
@@ -98,7 +99,7 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className="wd-dashboard-course col" style={{ width: "300px" }}>
+                    <div className="wd-dashboard-course col" style={{ width: "270px" }}>
                         <div className="card rounded-3 overflow-hidden">
                             <Link className="wd-dashboard-course-link text-decoration-none text-dark"
                                     to="/Kanbas/Courses/1234/Home">
@@ -108,7 +109,7 @@ export default function Dashboard() {
                                         CS1239 Algorithms
                                     </h5>
                                     <p className="wd-dashboard-course-title card-text">
-                                        Algorithms
+                                        Spring24, S02
                                     </p>
                                     <button className="btn btn-primary"> Go </button>
                                 </div>
@@ -116,7 +117,7 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className="wd-dashboard-course col" style={{ width: "300px" }}>
+                    <div className="wd-dashboard-course col" style={{ width: "270px" }}>
                         <div className="card rounded-3 overflow-hidden">
                             <Link className="wd-dashboard-course-link text-decoration-none text-dark"
                                     to="/Kanbas/Courses/1234/Home">
@@ -126,7 +127,7 @@ export default function Dashboard() {
                                         CS1230 Deep Learning
                                     </h5>
                                     <p className="wd-dashboard-course-title card-text">
-                                        Deep Learning
+                                        Fall24, S01
                                     </p>
                                     <button className="btn btn-primary"> Go </button>
                                 </div>
