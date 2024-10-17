@@ -29,10 +29,10 @@ export default function KanbasNavigation() {
 
         <Link to="/Kanbas/Account/Profile" className={`list-group-item text-center border-0 bg-black
             ${pathname.includes("Account") ? "bg-white text-danger" : "bg-black text-white"}`}>
-        <FaRegCircleUser className={`fs-1 ${pathname.includes("Account") ? "text-danger" : "text-white"}`} />
-        <br />
-        Account
-      </Link>
+          <FaRegCircleUser className={`fs-1 ${pathname.includes("Account") ? "text-danger" : "text-white"}`} />
+          <br />
+          Account
+        </Link>
       {links.map((link) => (
         <Link key={link.path} to={link.path} className={`list-group-item bg-black text-center border-0
               ${pathname.includes(link.label) ? "text-danger bg-white" : "text-white bg-black"}`}>

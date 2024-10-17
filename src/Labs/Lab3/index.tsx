@@ -8,11 +8,16 @@ import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
 import ConditionalOutputInline from "./ConditionalOutputInline";
 import Destructing from "./Destructing";
 import DestructingImports from "./DestructingImports";
+import FilterFunction from "./FilterFunction";
+import FindFunction from "./FindFunction";
+import FindIndex from "./FindIndex";
 import ForLoops from "./ForLoops";
 import FunctionDestructing from "./FunctionDestructing";
 import Highlight from "./Highlight";
 import House from "./House";
+import IfElse from "./IfElse";
 import ImpliedReturn from "./ImpliedReturn";
+import JsonStringify from "./JsonStringify";
 import LegacyFunctions from "./LegacyFunctions";
 import MapFunction from "./MapFunction";
 import PathParameters from "./PathParameters";
@@ -33,6 +38,7 @@ export default function Lab3() {
       <VariablesAndConstants />
       <VariableTypes />
       <BooleanVariables />
+      <IfElse />
       <TernaryOperator />
       <ConditionalOutputIfElse />
       <ConditionalOutputInline />
@@ -45,6 +51,10 @@ export default function Lab3() {
       <AddingAndRemovingToFromArrays />
       <ForLoops />
       <MapFunction />
+      <FindFunction />
+      <FindIndex />
+      <FilterFunction />
+      <JsonStringify />
       <House />
       <TodoList />
       <Spreading />

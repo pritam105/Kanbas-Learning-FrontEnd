@@ -6,8 +6,7 @@ export default function Highlight({ children }: { children: ReactNode }) {
       style={{
         backgroundColor: "yellow",
         color: "red",
-      }}
-    >
+      }}>
       {children}
     </span>
   );

@@ -43,7 +43,7 @@ export default function AssignmentEditor() {
         <div className="row mb-3 text-end">
           <label htmlFor="wd-points" className="col-sm-4 col-form-label">Points</label>
           <div className="col-sm-8">
-            <input id="wd-points" className="form-control" value={100} />
+            <input id="wd-points" className="form-control" value={assignment && assignment.points} />
           </div>
         </div>
 
@@ -113,12 +113,12 @@ export default function AssignmentEditor() {
             <input id="wd-assign-to" className="form-select" value="Everyone" />
             
             <label htmlFor="wd-due-date" className="col-form-label m-2 ms-1 mb-0 fw-bold">Due</label>
-            <input type="date" id="wd-due-date" className="form-control" defaultValue="2024-09-21" />
+            <input type="date" id="wd-due-date" className="form-control" defaultValue={assignment && assignment.dueDate} />
             
             <div className="row mb-3">
               <div className="col-sm-6">
                 <label htmlFor="wd-available-from" className="col-form-label m-2 ms-1 mb-0 fw-bold">Available From</label>
-                <input type="date" id="wd-available-from" className="form-control" defaultValue="2024-09-21" />
+                <input type="date" id="wd-available-from" className="form-control" defaultValue={assignment && assignment.availableDate} />
               </div>
               <div className="col-sm-6">
                 <label htmlFor="wd-available-to" className="col-form-label m-2 ms-1 mb-0 fw-bold"> Until</label>
