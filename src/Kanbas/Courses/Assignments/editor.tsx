@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom";
+import { useParams } from "react-router";
+import { assignments } from "../../Database";
+
 export default function AssignmentEditor() {
+  const { aid } = useParams();
+  const { cid } = useParams();
+  const assignment = assignments.find(assignment => assignment._id == aid)
     return (
     <div>
       <div id="wd-assignments-editor"
@@ -12,7 +18,7 @@ export default function AssignmentEditor() {
         <div className="row mb-3 text-end">
           <label htmlFor="wd-name" className="col-sm-2 col-form-label"></label>    
           <div className="col-sm-10">
-            <input id="wd-name" className="form-control" value="A1" />
+            <input id="wd-name" className="form-control" value={aid} />
           </div>
         </div>
         <div className="row mb-3">
@@ -125,8 +131,8 @@ export default function AssignmentEditor() {
 
         {/* Save and Cancel Buttons */}
         <div className="d-flex justify-content-end mt-3">
-          <Link to="/Kanbas/Courses/1234/Assignments" className="btn btn-light me-2" id="wd-course-assignment-link">Cancel</Link>
-          <Link to="/Kanbas/Courses/1234/Assignments" className="btn btn-success btn-danger" id="wd-course-assignment-link">Save</Link>
+          <Link to={`/Kanbas/Courses/${cid}/Assignments`} className="btn btn-light me-2" id="wd-course-assignment-link">Cancel</Link>
+          <Link to={`/Kanbas/Courses/${cid}/Assignments`} className="btn btn-success btn-danger" id="wd-course-assignment-link">Save</Link>
         </div>
         </div>
       </div>
