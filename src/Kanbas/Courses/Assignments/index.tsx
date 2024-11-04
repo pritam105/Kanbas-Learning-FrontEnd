@@ -1,40 +1,87 @@
+import { BsGripVertical, BsPlus } from "react-icons/bs";
+import { TfiWrite } from "react-icons/tfi";
+import LessonControlButtons from "../Modules/LessonControlButtons";
+import { CiSearch } from "react-icons/ci";
+import { IoEllipsisVertical } from "react-icons/io5";
+
 export default function Assignments() {
     return (
       <div id="wd-assignments">
-        <input id="wd-search-assignment"
-               placeholder="Search for Assignments" /> &nbsp;
-        <button id="wd-add-assignment-group">+ Group</button> &nbsp;
-        <button id="wd-add-assignment">+ Assignment</button>
-        <h3 id="wd-assignments-title">
-          ASSIGNMENTS 40% of Total <button>+</button>
-        </h3>
-        <ul id="wd-assignment-list">
-          <li className="wd-assignment-list-item">
-            <a className="wd-assignment-link"
-              href="#/Kanbas/Courses/1234/Assignments/123">
-              A1 - ENV + HTML
-            </a> <br/>
-            <span>Multiple Modules | <b><i>Not available until</i></b> May 6 at 12:00am | </span>
-            <b>Due</b> <br/> May 13 at 11:59pm | 100 pts
+        <div className="d-inline-flex align-items-stretch">
+          <span className="input-group-text border border-end-0 rounded-0 bg-white"><CiSearch className="fs-4"/></span>
+          <input
+            id="wd-search-assignment"
+            type="search"
+            className="form-control ml-3 border-start-0 border rounded-0 rounded-left"
+            placeholder="Search..."/>
+        </div>
+        <button id="wd-add-assignment" className="btn btn-md btn-danger me-1 float-end">+ Assignment</button>
+        <button id="wd-add-assignment-group" className="btn btn-md me-1 bg-secondary float-end">+ Group</button>
+        <br/>
+        <br/>
+
+        <ul className="list-group rounded-0">
+          <li className="list-group-item p-0 mb-5 fs-5 border-gray">
+              <div id = "wd-assignments-title" className="p-3 ps-2 pb-4 bg-secondary"> 
+                <BsGripVertical className="me-2 fs-3" />ASSIGNMENTS
+                <IoEllipsisVertical className="fs-3 pt-1 float-end" />
+                <BsPlus className="fs-2 pt-2 float-end"/>
+                <span className="float-end border border-black p-1 rounded-5">40% of Total</span>
+              </div>
+              <ul id="wd-assignment-list" className="list-group rounded-0">
+                <li className="wd-assignment-list-item wd-lesson list-group-item p-3 ms-0 ps-1">
+                  <div className="d-inline-flex">
+                    <div className="align-self-center">
+                      <BsGripVertical className="me-3 fs-3" />
+                      <TfiWrite className="me-4 fs-3 "/>
+                    </div>
+                    <div>
+                      <a className="wd-assignment-link"
+                        href="#/Kanbas/Courses/1234/Assignments/123">
+                        A1 - ENV + HTML
+                      </a> <br/>
+                      <span className="text-danger">Multiple Modules</span> | <b>Not available until</b> May 6 at 12:00am |
+                      <br/><b>Due</b> May 13 at 11:59pm | 100 pts
+                    </div>
+                  </div>
+                  <LessonControlButtons/>
+                </li>               
+                <li className="wd-assignment-list-item wd-lesson list-group-item p-3 ms-0 ps-1">
+                  <div className="d-inline-flex">
+                    <div className="align-self-center">
+                      <BsGripVertical className="me-3 fs-3" />
+                      <TfiWrite className="me-4 fs-3 "/>
+                    </div>
+                    <div>
+                      <a className="wd-assignment-link"
+                        href="#/Kanbas/Courses/1234/Assignments/123">
+                        A2 - ENV + HTML
+                      </a> <br/>
+                      <span className="text-danger">Multiple Modules</span> | <b>Not available until</b> May 13 at 12:00am |
+                      <br/><b>Due</b> May 20 at 11:59pm | 100 pts
+                    </div>
+                  </div>
+                  <LessonControlButtons/>
+                </li>
+                <li className="wd-assignment-list-item wd-lesson list-group-item p-3 ms-0 ps-1">
+                  <div className="d-inline-flex">
+                    <div className="align-self-center">
+                      <BsGripVertical className="me-3 fs-3" />
+                      <TfiWrite className="me-4 fs-3 "/>
+                    </div>
+                    <div>
+                      <a className="wd-assignment-link"
+                        href="#/Kanbas/Courses/1234/Assignments/123">
+                        A3 - ENV + HTML
+                      </a> <br/>
+                      <span className="text-danger">Multiple Modules</span> | <b>Not available until</b> May 20 at 12:00am |
+                      <br/><b>Due</b> May 27 at 11:59pm | 100 pts
+                    </div>
+                  </div>
+                  <LessonControlButtons/>
+                </li>
+              </ul>
           </li>
-          <br/>
-          <li className="wd-assignment-list-item">
-            <a className="wd-assignment-link"
-              href="#/Kanbas/Courses/1235/Assignments/124">
-              A3 - ENV + HTML
-            </a> <br/>
-            <span>Multiple Modules | <b><i>Not available until</i></b> May 13 at 12:00am | </span>
-            <b>Due</b> <br/> May 20 at 11:59pm | 100 pts                      
-          </li>
-          <br/>
-          <li className="wd-assignment-list-item">
-            <a className="wd-assignment-link"
-              href="#/Kanbas/Courses/1236/Assignments/125">
-              A4 - ENV + HTML
-            </a> <br/>          
-            <span>Multiple Modules | <b><i>Not available until</i></b> May 20 at 12:00am | </span>
-            <b>Due</b> <br/> May 27 at 11:59pm | 100 pts            
-          </li>          
         </ul>
       </div>
   );}
