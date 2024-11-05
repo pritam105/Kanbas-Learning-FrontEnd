@@ -65,8 +65,8 @@ export default function Assignments() {
                           {assignment._id} - {assignment.title}
                         </a> // Render as a link for other roles
                       )} <br/>
-                        <span className="text-danger">Multiple Modules</span> | <b>Not available until</b> May 6 at 12:00am |
-                        <br/><b>Due</b> May 13 at 11:59pm | 100 pts
+                        <span className="text-danger">Multiple Modules</span> | <b>Not available until</b> {assignment.availableDate} |
+                        <br/><b>Due</b> {assignment.dueDate} | {assignment.points}
                       </div>
                     </div>
                     <LessonControlButtons/>

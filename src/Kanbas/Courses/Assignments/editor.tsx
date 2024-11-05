@@ -12,10 +12,10 @@ export default function AssignmentEditor() {
   const assignments = useSelector((state: any) => state.assignmentReducer.assignments);
   const assignment = assignments.find((assignment: any) => assignment._id == aid)
   
-  const [title, setTitle] = useState(assignment ? assignment.title : '');
-  const [points, setPoints] = useState(assignment ? assignment.points : '');
-  const [dueDate, setDueDate] = useState(assignment ? assignment.dueDate : '');
-  const [availableDate, setAvailableDate] = useState(assignment ? assignment.availableDate : '');
+  const [title, setTitle] = useState(assignment ? assignment.title : 'New Assignment');
+  const [points, setPoints] = useState(assignment ? assignment.points : 100);
+  const [dueDate, setDueDate] = useState(assignment ? assignment.dueDate : '2024-05-15');
+  const [availableDate, setAvailableDate] = useState(assignment ? assignment.availableDate : '2024-05-15');
   
   const handleSave = () => {
     if (aid) {
@@ -151,7 +151,7 @@ export default function AssignmentEditor() {
             
             <label htmlFor="wd-due-date" className="col-form-label m-2 ms-1 mb-0 fw-bold">Due</label>
             <input type="date" id="wd-due-date" className="form-control" 
-                   value={dueDate} 
+                   value={dueDate}
                    onChange={(e) => setDueDate(e.target.value)}/>
             
             <div className="row mb-3">
