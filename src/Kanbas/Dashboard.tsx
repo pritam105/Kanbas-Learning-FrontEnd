@@ -74,9 +74,7 @@ export default function Dashboard({
                         .map((course: any) => 
                         (<div className="wd-dashboard-course col" style={{ width: "270px" }}>
                             <div className="card rounded-3 overflow-hidden">
-                                <Link className="wd-dashboard-course-link text-decoration-none text-dark"
-                                        to={`/Kanbas/Courses/${course._id}/Home`}>
-                                    <img src={`/images/${course._id}.png`} width="100%" height={160}/>
+                                    <img src={course.logo} width="100%" height={160}/>
                                     <div className="card-body">
                                         <h5 className="wd-dashboard-course-title card-title">
                                             {course.name}
@@ -84,7 +82,11 @@ export default function Dashboard({
                                         <p className="wd-dashboard-course-title card-text overflow-y-hidden" style={{ maxHeight: 100 }}>
                                             {course.description} 
                                         </p>
-                                        <button className="btn btn-primary"> Go </button>
+                                        {isUserEnrolledInCourse(course._id) && 
+                                        <Link className="wd-dashboard-course-link text-decoration-none text-dark"
+                                            to={`/Kanbas/Courses/${course._id}/Home`}>
+                                            <button className="btn btn-primary"> Go </button>
+                                        </Link>}
                                         <ProtectedStudentRoute>
                                             {isUserEnrolledInCourse(course._id) && 
                                             <button onClick={(event) => {
@@ -122,7 +124,6 @@ export default function Dashboard({
                                         </button>
                                         </ProtectedFacultyRoute>
                                     </div>
-                                </Link>
                             </div>
                         </div>
                         ))
