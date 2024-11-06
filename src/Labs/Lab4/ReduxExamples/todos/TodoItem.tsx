@@ -9,9 +9,9 @@ export default function TodoItem({
   const dispatch = useDispatch();
   return (
     <li key={todo.id} className="list-group-item">
-      <button onClick={() => dispatch(deleteTodo(todo.id))}>Delete </button>
-      <button onClick={() => dispatch(setTodo(todo))}>Edit </button>
       {todo.title}
+      <button className = "btn btn-primary btn-danger float-end" onClick={() => dispatch(deleteTodo(todo.id))}>Delete </button>
+      <button className = "btn btn-primary me-2 float-end" onClick={() => dispatch(setTodo(todo))}>Edit </button>
     </li>
   );
 }

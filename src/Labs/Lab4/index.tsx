@@ -2,6 +2,7 @@ import ArrayStateVariable from "./ArrayStateVariable";
 import BooleanStateVariables from "./BooleanStateVariables";
 import ClickEvent from "./ClickEvent";
 import Counter from "./Counter";
+import DateStateVariable from "./DateStateVariable";
 import EventObject from "./EventObject";
 import ObjectStateVariable from "./ObjectStateVariable";
 import ParentStateComponent from "./ParentStateComponent";
@@ -24,6 +25,7 @@ export default function Lab4() {
       <Counter />
       <BooleanStateVariables />
       <StringStateVariables />
+      <DateStateVariable />
       <ObjectStateVariable />
       <ArrayStateVariable />
       <ParentStateComponent />

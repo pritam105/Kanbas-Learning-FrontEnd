@@ -7,7 +7,7 @@ export default function TodoList() {
   return (
     <div>
       <h2>Todo List</h2>
-      <ul className="list-group">
+      <ul style={{width:370}}className="list-group">
         <TodoForm />
         {todos.map((qwe: any) => (
           <TodoItem key={qwe.id} todo={qwe} />
