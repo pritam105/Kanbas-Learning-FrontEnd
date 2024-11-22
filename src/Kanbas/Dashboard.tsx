@@ -33,9 +33,11 @@ export default function Dashboard({
         );
     };
 
-    const displayCourses = showEnrollments 
-        ? courses.filter(course => isUserEnrolledInCourse(course._id)) 
-        : courses;
+    // const displayCourses = showEnrollments 
+    //     ? courses.filter(course => isUserEnrolledInCourse(course._id)) 
+    //     : courses;
+    
+    const displayCourses = showEnrollments ? courses : courses;
 
     const toggleDisplayCourses = () => {
         setShowEnrollments(!showEnrollments);
