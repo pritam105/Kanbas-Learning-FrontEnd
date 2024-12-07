@@ -1,156 +1,106 @@
-import { RiSearchLine } from "react-icons/ri";
-import { HiPlus } from "react-icons/hi2";
 import { BsGripVertical, BsPlus } from "react-icons/bs";
+import { TfiWrite } from "react-icons/tfi";
+import LessonControlButtons from "../Modules/LessonControlButtons";
+import { CiSearch } from "react-icons/ci";
 import { IoEllipsisVertical } from "react-icons/io5";
-import { PiNotePencilLight } from "react-icons/pi";
-import { useNavigate, useParams } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import AssignmentControlButtons from "./AssignmentDeleteButton";
-import { deleteAssignment, setAssignment } from "./reducer";
+import { useParams } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteAssignment }from "./reducer";
+import { Link } from "react-router-dom";
+import ProtectedFacultyRoute from "../../Account/ProtectedFacultyRoute";
+import { FaPencil, FaTrash } from "react-icons/fa6";
+import AssignmentDeleteButton from "./AssignmentDeleteButton";
+import { useEffect, useState } from "react";
 import * as courseClient from "../client";
 import * as assignmentClient from "./client";
-import { useEffect } from "react";
 
 export default function Assignments() {
-  const { cid } = useParams();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { assignments } = useSelector((state: any) => state.assignmentReducer);
-  const { currentUser } = useSelector((state: any) => state.accountReducer) || {};
-
-  // const courseAssignments = assignments.filter(
-  //   (assignment: any) => assignment.course === cid
-  // );
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const {cid} = useParams();
+  const [ assignments, setAssignments ] = useState<any>([]);
 
   const fetchAssignments = async () => {
-    const assignments = await courseClient.findAssignmentForCourse(cid as string);
-    dispatch(setAssignment(assignments));
-   
+    const assignments = await courseClient.getAssignmentsForCourse(cid as string);
+    setAssignments(assignments);
+  }
+
+  const deleteAssignment = async (payload: any) => {
+    await assignmentClient.deleteAssignment(payload._id);
+    setAssignments(assignments.filter((a: any) => a._id !== payload._id));
   };
 
-  const removeAssignment = async (assignmentId: string) => {
-    await assignmentClient.deleteAssignment(assignmentId);
-    dispatch(deleteAssignment(assignmentId));
-  };
-
-  useEffect(() => {
+  useEffect( () => {
     fetchAssignments();
   }, []);
 
-  function formatDate(dateString: string | number | Date) {
-    const options: Intl.DateTimeFormatOptions = { month: "short", day: "numeric" };
-    const date = new Date(dateString);
-    const time = date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true
-    }).toLowerCase();
-    return `${date.toLocaleDateString("en-US", options)} at ${time}`;
-  }
-
-  const handleAddAssignment = () => {
-    navigate(`/Kanbas/Courses/${cid}/Assignments/New`);
-  };
-
-  return (
-    <div id="wd-assignments">
-      <div className="container m-2" style={{ position: "relative" }}>
-        <span>
-          <RiSearchLine className="icon" />
-        </span>
-        <input
-          id="wd-search-assignment"
-          placeholder="Search..."
-          style={{ height: "34px" }}
-        />
-        
-        {/* Show "Add Assignment" buttons only if the user is FACULTY */}
-        {currentUser?.role === "FACULTY" && (
-          <>
-            <button
-              id="wd-add-assignment-group"
-              className="btn btn-light btn-secondary ms-4"
-            >
-              <HiPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-              Group
+    return (
+      <div id="wd-assignments">
+        <div className="d-inline-flex align-items-stretch">
+          <span className="input-group-text border border-end-0 rounded-0 bg-white"><CiSearch className="fs-4"/></span>
+          <input
+            id="wd-search-assignment"
+            type="search"
+            className="form-control ml-3 border-start-0 border rounded-0 rounded-left"
+            placeholder="Search..."/>
+        </div>
+        <ProtectedFacultyRoute>
+          <Link to={`/Kanbas/Courses/${cid}/Assignments/New`}>
+            <button id="wd-add-assignment"
+                  className="btn btn-md btn-danger me-1 float-end"
+                  >+ Assignment
             </button>
-            <button
-              id="wd-add-assignment"
-              className="btn btn-danger m-1"
-              onClick={handleAddAssignment}
-            >
-              <HiPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-              Assignment
-            </button>
-          </>
-        )}
-      </div>
+          </Link>
+          <button id="wd-add-assignment-group" className="btn btn-md me-1 bg-secondary float-end">+ Group</button>
+        </ProtectedFacultyRoute>
+        <br/>
+        <br/>
 
-      <div className="wd-title p-3 ps-2 bg-secondary">
-        <h3 id="wd-assignments-title">
-          <BsGripVertical className="me-2 fs-3" />
-          ASSIGNMENTS
-          <div className="float-end">
-            <span className="btn btn-outline-secondary rounded-pill mb-2">
-              40% of Total
-            </span>
-            <BsPlus className="fs-4" />
-            <IoEllipsisVertical className="fs-4" />
-          </div>
-        </h3>
+        <ul className="list-group rounded-0">
+          <li className="list-group-item p-0 mb-5 fs-5 border-gray">
+              <div id = "wd-assignments-title" className="p-3 ps-2 pb-4 bg-secondary"> 
+                <BsGripVertical className="me-2 fs-3" />ASSIGNMENTS
+                <IoEllipsisVertical className="fs-3 pt-1 float-end" />
+                <BsPlus className="fs-2 pt-2 float-end"/>
+                <span className="float-end border border-black p-1 rounded-5">40% of Total</span>
+              </div>
+              <ul id="wd-assignment-list" className="list-group rounded-0">
+              {assignments
+                .filter((assignment:any) =>  assignment.course == cid)
+                .map((assignment:any) =>
+                  <li className="wd-assignment-list-item wd-lesson list-group-item p-3 ms-0 ps-1">
+                    <div className="d-inline-flex">
+                      <div className="align-self-center">
+                        <BsGripVertical className="me-3 fs-3" />
+                        <TfiWrite className="me-4 fs-3 "/>
+                      </div>
+                      <div>
+                      {currentUser.role === "STUDENT" ? (
+                        <span>{assignment.title}</span> // Render as text if the role is STUDENT
+                      ) : (
+                        <a className="wd-assignment-link" href={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}>
+                          {assignment.title}
+                        </a> // Render as a link for other roles
+                      )} <br/>
+                        <span className="text-danger">Multiple Modules</span> | <b>Not available until</b> {assignment.availableDate} |
+                        <br/><b>Due</b> {assignment.dueDate} | {assignment.points}
+                      </div>
+                    </div>
+                    <LessonControlButtons/>
+                    <ProtectedFacultyRoute>
+                      <AssignmentDeleteButton
+                          aid= {assignment._id}
+                          deleteAssignment = {(id: any) => {
+                            console.log("inside function" + id)
+                            const confirmed = window.confirm("Are you sure you want to delete this assignment?");
+                            if (confirmed) {
+                              deleteAssignment({_id: id});
+                            }
+                          }}/>
+                    </ProtectedFacultyRoute>
+                  </li> 
+                )}
+              </ul>
+          </li>
+        </ul>
       </div>
-
-      <ul id="wd-assignment-list" className="list-group rounded-0">
-        {assignments.length > 0 ? (
-          assignments.map((assignment: any) => (
-            <li
-              key={assignment._id}
-              className="wd-assignment-list-item list-group-item p-3 ps-2 border-bottom d-flex align-items-start"
-            >
-              <div className="me-3">
-                <BsGripVertical className="me-2 fs-3" />
-                <PiNotePencilLight className="me-2 fs-3" style={{ color: "green" }} />
-              </div>
-              <div className="flex-grow-1">
-                <div className="d-flex justify-content-between">
-                {currentUser?.role === "FACULTY" ? (
-    <a
-      className="wd-assignment-link"
-      href={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}
-    >
-      {assignment.title}
-    </a>
-  ) : (
-    <span className="wd-assignment-title">{assignment.title}</span>
-  )}
-                  {/* Show AssignmentControlButtons only if the user is FACULTY */}
-                  {currentUser?.role === "FACULTY" && (
-                    <AssignmentControlButtons
-                      aid= {assignment._id}
-                      deleteAssignment = {(id: any) => {
-                        const confirmed = window.confirm("Are you sure you want to delete this assignment?");
-                        if (confirmed) {
-                          //dispatch(deleteAssignment(moduleId));
-                          removeAssignment(assignment._id)
-                        }
-                      }}
-                    />
-                  )}
-                </div>
-                <p>
-                  <span className="red">Multiple Modules</span> |{" "}
-                  <strong>Not available until</strong> {formatDate(assignment.available_date)}
-                </p>
-                <p>
-                  <strong>Due</strong> {formatDate(assignment.due_date)} | {assignment.points} pts
-                </p>
-              </div>
-            </li>
-          ))
-        ) : (
-          <li className="list-group-item p-3">No assignments available for this course.</li>
-        )}
-      </ul>
-    </div>
-  );
-}
+  );}
