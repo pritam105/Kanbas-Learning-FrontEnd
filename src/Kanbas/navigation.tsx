@@ -5,10 +5,12 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoMailOpenOutline } from "react-icons/io5";
 import { BsPersonWorkspace } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
 export default function KanbasNavigation() {
   const { pathname } = useLocation();
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
   const links = [
     { label: "Dashboard", path: "/Kanbas/Dashboard", icon: AiOutlineDashboard },
     { label: "Courses",   path: "/Kanbas/Dashboard", icon: LiaBookSolid },
@@ -27,7 +29,7 @@ export default function KanbasNavigation() {
         className="list-group-item bg-black border-0 text-center">
         <img src="/images/neuLogo.jpg" width="75px" /></a>
 
-        <Link to="/Kanbas/Account/Profile" className={`list-group-item text-center border-0 bg-black
+        <Link to={currentUser ? "/Kanbas/Account/Profile" : "/Kanbas/Account/Signin" } className={`list-group-item text-center border-0 bg-black
             ${pathname.includes("Account") ? "bg-white text-danger" : "bg-black text-white"}`}>
           <FaRegCircleUser className={`fs-1 ${pathname.includes("Account") ? "text-danger" : "text-white"}`} />
           <br />
