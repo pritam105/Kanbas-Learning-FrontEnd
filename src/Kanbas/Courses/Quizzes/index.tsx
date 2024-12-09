@@ -3,7 +3,6 @@ import { FaPlus } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-// import { fetchQuizzesForCourse, deleteQuiz, publishQuiz, unpublishQuiz, deleteAllQuizzes, publishAllQuizzes, unpublishAllQuizzes } from "./client";
 import * as quizClient from "./client";
 import { setQuizzes, deleteQuiz as reduxDeleteQuiz } from './reducer';
 import { MdArrowDropDown } from "react-icons/md";
@@ -56,7 +55,7 @@ export default function Quizzes() {
   };
 
   const handleEdit = (quizId: string) => {
-    navigate(`/Kanbas/Courses/${cid}/Quizzes/${quizId}`);
+    navigate(`/Kanbas/Courses/${cid}/Quizzes/Details/${quizId}`);
   };
   
   const togglePublishStatus = async (quizId: string, isPublished: boolean) => {
@@ -125,7 +124,7 @@ export default function Quizzes() {
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="quizMenuButton">
                  <li>
-        <a className="dropdown-item" href={`#/Kanbas/Courses/${cid}/Quizzes/${quiz._id}`} onClick={() => handleEdit(quiz._id)}>Edit</a>
+        <a className="dropdown-item" onClick={() => handleEdit(quiz._id)}>Edit</a>
     </li>
     <li>
         <a className="dropdown-item" href={`#/Kanbas/Courses/${cid}/Quizzes`} onClick={() => handleDelete(quiz._id)}>Delete</a>

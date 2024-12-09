@@ -22,13 +22,6 @@ export interface Question {
   correctAnswers?: string[];
 }
 
-export interface Quiz {
-  id: string;
-  title: string;
-  description: string;
-  questions: Question[];
-}
-
 export interface AnswerMap {
   [key: string]: any;
 }
@@ -120,7 +113,7 @@ function QuizPreviewScreen() {
           />
         );
       })}
-      <button onClick={handleSubmit}>Submit Quiz</button>
+      <button className = "btn btn-primary" onClick={handleSubmit}>Submit Quiz</button>
     </div>
   );
 }
