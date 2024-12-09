@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as quizClient from "./client";
 import { setQuizDetails as reduxSetQuizDetails } from './reducer';
 import QuestionEditor from './QuestionEditor';
+import ReactQuill from 'react-quill';
 
 function QuizEditor() {
   const { cid, qid } = useParams<{ cid: string; qid: string }>();
@@ -18,47 +19,85 @@ function QuizEditor() {
     });
 
   const [quizDetails, setQuizDetails] = useState({
-    _id: qid || `quiz-${Date.now()}`,
-    title: quiz.title || '',
-    description: quiz.description || '',
-    quizType: quiz.quizType || 'Graded Quiz',
-    assignmentGroup: quiz.assignmentGroup || 'Quizzes',
-    shuffleAnswers: quiz.shuffleAnswers || false,
-    timeLimit: quiz.timeLimit || 20,
-    multipleAttempts: quiz.multipleAttempts || false,
-    showCorrectAnswers: quiz.showCorrectAnswers || '',
-    accessCode: quiz.accessCode || '',
-    oneQuestionAtATime: quiz.oneQuestionAtATime || true,
-    webcamRequired: quiz.webcamRequired || false,
-    lockQuestionsAfterAnswering: quiz.lockQuestionsAfterAnswering || false,
-    dueDate: quiz.dueDate || '',
-    availableDate: quiz.availableDate || '',
-    untilDate: quiz.untilDate || '',
-    questions: quiz.questions || []
+    _id: `quiz-${Date.now()}`,
+    title: '',
+    description: '',
+    quizType: 'Graded Quiz',
+    assignmentGroup: 'Quizzes',
+    shuffleAnswers: false,
+    timeLimit: 20,
+    allowedAttempts: 1,
+    showCorrectAnswers: '',
+    accessCode: '',
+    oneQuestionAtATime: true,
+    webcamRequired: false,
+    lockQuestionsAfterAnswering: false,
+    dueDate: '',
+    availableDate: '',
+    untilDate: '',
+    published: false,
+    questions: []
   });
 
   useEffect(() => {
-    if (cid && qid !== "new" && !quiz._id) {
+    if (cid && qid !== "new") {
         quizClient.fetchQuizDetails(cid, qid!).then(details => {
         dispatch(reduxSetQuizDetails(details));
         setQuizDetails(details);
       }).catch(error => console.error('Failed to fetch quiz details:', error));
     }
-  }, [cid, qid, dispatch, quiz._id]);
+  }, [cid, qid, dispatch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setQuizDetails(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = async () => {
+  // const handleSave = async (publish: boolean) => {
+  //   setQuizDetails((prev) => ({
+  //     ...prev,
+  //     published: publish,
+  //   }));
+  //   let createdQuiz;
+
+  //   if (qid !== "new") {
+  //     // console.log("logging quiz details " + quizDetails);
+  //     await quizClient.updateQuizDetails(qid as string, quizDetails);
+  //   } else {
+  //     createdQuiz = await quizClient.createQuiz(cid as string, quizDetails);
+  //   }
+  //   if (publish) {
+  //     navigate(`/Kanbas/Courses/${cid}/Quizzes`);
+  //   } else {
+  //     if (qid === "new") {
+  //       navigate(`/Kanbas/Courses/${cid}/Quizzes/Details/${createdQuiz._id}`);
+  //     } else {
+  //       navigate(`/Kanbas/Courses/${cid}/Quizzes/Details/${qid}`);
+  //     }
+  //   }
+  // };
+
+
+  const handleSave = async (publish: boolean) => {
+    let savedQuiz;
     if (qid !== "new") {
       // console.log("logging quiz details " + quizDetails);
       await quizClient.updateQuizDetails(qid as string, quizDetails);
+      if (publish) {
+        await quizClient.publishQuiz(qid as string);
+        navigate(`/Kanbas/Courses/${cid}/Quizzes`);
+      } else {
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/Details/${qid}`);
+      }
     } else {
-      await quizClient.createQuiz(cid as string, quizDetails);
+      savedQuiz = await quizClient.createQuiz(cid as string, quizDetails);
+      if (publish) {
+        await quizClient.publishQuiz(savedQuiz._id);
+        navigate(`/Kanbas/Courses/${cid}/Quizzes`);
+      } else {
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/Details/${savedQuiz._id}`);
+      }
     }
-    navigate(`/Kanbas/Courses/${cid}/Quizzes/Details/${qid}`);
   };
 
   const handleCancel = () => {
@@ -76,7 +115,6 @@ function QuizEditor() {
         height: "calc(100vh - 100px)",
         overflowY: "auto",
       }}>
-      <hr/>
       <div className="nav nav-tabs">
         <button className={`nav-link ${activeTab === 'detail' ? 'active' : ''}`}
                 onClick={() => setActiveTab('detail')}>Details</button>
@@ -88,37 +126,85 @@ function QuizEditor() {
         <>
           <input type="text" name="title" value={quizDetails.title}
                  onChange={handleChange} className="form-control mb-2" placeholder="Unnamed Quiz" />
-          <textarea name="description" value={quizDetails.description}
-                    onChange={handleChange} className="form-control mb-2" placeholder="Quiz Instructions" rows={4} />
+          <ReactQuill theme="snow" value={quizDetails.description} className="mb-2"
+                      onChange={() => handleChange} />
+          <br/>
+          <br/>
           <br/>
           <label>Quiz Type</label>
           <select name="quizType" value={quizDetails.quizType} onChange={handleChange}
-                  className="form-control mb-2">
+                  className="form-select">
             <option value="Graded Quiz">Graded Quiz</option>
             <option value="Practice Quiz">Practice Quiz</option>
             <option value="Graded Survey">Graded Survey</option>
             <option value="Ungraded Survey">Ungraded Survey</option>
           </select>
+
+          <br/>
           <label>Assignment Group</label>
           <select name="assignmentGroup" value={quizDetails.assignmentGroup} onChange={handleChange}
-                  className="form-control mb-2">
+                  className="form-select">
             <option value="Quizzes">Quizzes</option>
             <option value="Exams">Exams</option>
             <option value="Assignments">Assignments</option>
             <option value="Projects">Projects</option>
-          </select><br/>
+          </select>
+          <br/>
+          
           <h5>Options</h5>
-          <div style={{ border: '1px solid #ccc', padding: '10px', borderRadius: '5px', marginBottom: '10px' }}>
+          <div className="form-check">
+                <input type="checkbox" id="shuffle" 
+                       onChange={(e) => setQuizDetails({ ...quizDetails, shuffleAnswers: e.target.checked })} 
+                       className="form-check-input" defaultChecked={quizDetails.shuffleAnswers} />
+                <label htmlFor="shuffle" className="form-check-label ms-2"> Shuffle Answers</label>
+          </div>
+          <br/>
+          {/* <div style={{ border: '1px solid #ccc', padding: '10px', borderRadius: '5px', marginBottom: '10px' }}>
           <label>Shuffle Answers</label>
           <input type="checkbox"  name="shuffleAnswers" checked={quizDetails.shuffleAnswers}
-                 onChange={(e) => setQuizDetails({ ...quizDetails, shuffleAnswers: e.target.checked })} /></div>
+                 onChange={(e) => setQuizDetails({ ...quizDetails, shuffleAnswers: e.target.checked })} /></div> */}
+
           <label>Time Limit (minutes)</label>
           <input type="number" name="timeLimit" value={quizDetails.timeLimit}
                  onChange={handleChange} className="form-control mb-2" placeholder="Time Limit (minutes)" />
-          <div style={{ border: '1px solid #ccc', padding: '10px', borderRadius: '5px', marginBottom: '10px' }}>
+          
+          <label>Attempts Allowed</label>
+          <input type="number" name="allowedAttempts" value={quizDetails.allowedAttempts}
+                 onChange={handleChange} className="form-control mb-2" />
+
+          <label>Access Code</label>
+          <input type="text" name="accessCode" 
+                 onChange={handleChange} className="form-control mb-2" value={quizDetails.accessCode} />
+          <br/>
+
+          <label>One Question at a Time</label>
+          <select name="oneQuestionAtATime" value={quizDetails.oneQuestionAtATime ? "true" : "false"} onChange={handleChange}
+                  className="form-select">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+          <br/>
+
+          <label>Webcam Required</label>
+          <select name="webcamRequired" value={quizDetails.webcamRequired ? "true" : "false"} onChange={handleChange}
+                  className="form-select">
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+          </select>
+          <br/>
+
+          <label>Lock Questions After Answering</label>
+          <select name="lockQuestionsAfterAnswering" value={quizDetails.lockQuestionsAfterAnswering ? "true" : "false"} onChange={handleChange}
+                  className="form-select">
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+          </select>
+
+          {/* <div style={{ border: '1px solid #ccc', padding: '10px', borderRadius: '5px', marginBottom: '10px' }}>
           <label>Allow Multiple Attempts</label>
           <input type="checkbox" name="multipleAttempts" checked={quizDetails.multipleAttempts}
-                 onChange={(e) => setQuizDetails({ ...quizDetails, multipleAttempts: e.target.checked })} /></div>
+                 onChange={(e) => setQuizDetails({ ...quizDetails, multipleAttempts: e.target.checked })} /></div> */}
+
           <div className="mb-3 row">
         <label htmlFor="assign-group" className="mt-4 col-sm-4 col-form-label text-end">Assign</label>
 
@@ -130,7 +216,7 @@ function QuizEditor() {
           <div className="row">
             <div className="col-sm-6">
               <h5>Available from</h5>
-              <input type="datetime-local" className="form-control" name="availableFrom" value={quizDetails.availableDate} onChange={handleChange} />
+              <input type="datetime-local" className="form-control" name="availableDate" value={quizDetails.availableDate} onChange={handleChange} />
             </div>
             <div className="col-sm-6">
               <h5>Until</h5>
@@ -152,7 +238,8 @@ function QuizEditor() {
       )}
       <div className="float-end">
         <button onClick={handleCancel} className="btn btn-secondary">Cancel</button>
-        <button onClick={handleSave} className="btn btn-danger ms-2">{qid === "new" ? 'Create' : 'Update'} & Save</button>
+        <button onClick={() => handleSave(false)} className="btn btn-danger ms-2">Save</button>
+        <button onClick={() => handleSave(true)} className="btn btn-danger ms-2">Save & Publish</button>
       </div>
     </div>
   );

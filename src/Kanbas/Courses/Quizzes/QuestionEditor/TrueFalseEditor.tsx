@@ -15,12 +15,16 @@ interface TrueFalseEditorProps {
 
 function TrueFalseEditor({ question: initialQuestion, onSave, onCancel }: TrueFalseEditorProps) {
   const [question, setQuestion] = useState(initialQuestion);
-  // const [question, setQuestion] = useState({
-  //   title: '',
-  //   points: 1,
-  //   questionText: '',
-  //   isTrue: true
-  // });
+  const [isEditMode, setIsEditMode] = useState(false); // Track if in edit mode
+
+  const handleEdit = () => {
+    setIsEditMode(true); // Switch to edit mode
+  };
+
+  const handleSave = () => {
+    onSave(question); // Call the onSave function passed as a prop
+    setIsEditMode(false); // Exit edit mode
+  };
 
   return (
     <div style={{
@@ -35,6 +39,7 @@ function TrueFalseEditor({ question: initialQuestion, onSave, onCancel }: TrueFa
         placeholder="Question Title"
         value={question.title}
         onChange={(e) => setQuestion({ ...question, title: e.target.value })}
+        disabled = {!isEditMode}
       />
       <h4>pts:</h4>
       <input
@@ -43,6 +48,7 @@ function TrueFalseEditor({ question: initialQuestion, onSave, onCancel }: TrueFa
         placeholder="Points"
         value={question.points}
         onChange={(e) => setQuestion({ ...question, points: parseInt(e.target.value, 10) })}
+        disabled = {!isEditMode}
       />
       <h4>Question:</h4>
       <ReactQuill
@@ -59,6 +65,7 @@ function TrueFalseEditor({ question: initialQuestion, onSave, onCancel }: TrueFa
             name="isTrue"
             checked={question.isTrue}
             onChange={() => setQuestion({ ...question, isTrue: true })}
+            disabled = {!isEditMode}
           />
           <label className="form-check-label">True</label>
         </div>
@@ -69,13 +76,20 @@ function TrueFalseEditor({ question: initialQuestion, onSave, onCancel }: TrueFa
             name="isTrue"
             checked={!question.isTrue}
             onChange={() => setQuestion({ ...question, isTrue: false })}
+            disabled = {!isEditMode}
           />
           <label className="form-check-label">False</label>
         </div>
       </div>
       <div className="mt-3">
-        <button className="btn btn-sm btn-success" onClick={() => onSave(question)}>Save</button>
-        <button className="btn btn-sm btn-danger ms-2" onClick={onCancel}>Cancel</button>
+      {!isEditMode ? (
+          <button className="btn btn-sm btn-primary ms-2" onClick={handleEdit}>Edit</button>
+        ) : (
+          <>
+            <button className="btn btn-sm btn-success ms-2" onClick={handleSave}>Save</button>
+            <button className="btn btn-sm btn-danger ms-2" onClick={onCancel}>Remove</button>
+          </>
+        )}
       </div>
     </div>
   );

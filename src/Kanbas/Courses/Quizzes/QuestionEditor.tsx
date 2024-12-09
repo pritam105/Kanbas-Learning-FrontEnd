@@ -53,8 +53,25 @@ export default function QuestionEditor({ quizDetails, setQuizDetails } : any) {
   };
 
 
-  const handleCancel = () => {
-    navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}`);
+  /**
+   * handleCancel:
+   * Removes the current question from quizDetails.questions by index if editing an existing question.
+   */
+  const handleCancel = (index?: number) => {
+    console.log("index " + index);
+    if (index !== undefined) {
+      // Remove the question at the given index
+      const updatedQuestions = [...quizDetails.questions];
+      console.log("questions before slice " + JSON.stringify(updatedQuestions));
+      updatedQuestions.splice(index, 1); // Removes the question at the given index
+      console.log("questions after slice " + JSON.stringify(updatedQuestions));
+      setQuizDetails((prev: any) => ({
+        ...prev,
+        questions: updatedQuestions
+      }));
+    }
+    // console.log(" after setting state " + JSON.stringify(quizDetails.questions));
+    // navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}`);
   };
 
   /**
@@ -100,7 +117,7 @@ export default function QuestionEditor({ quizDetails, setQuizDetails } : any) {
           <MultipleChoiceEditor
             question={question}
             onSave={(data) => handleSave(data, index)}
-            onCancel={handleCancel}
+            onCancel={() => handleCancel(index)}
           />
         );
       case 'trueFalse':
@@ -110,7 +127,7 @@ export default function QuestionEditor({ quizDetails, setQuizDetails } : any) {
           <TrueFalseEditor
             question={tfQuestion}
             onSave={(data) => handleSave(data, index)}
-            onCancel={handleCancel}
+            onCancel={() => handleCancel(index)}
           />
         );
       case 'fillInBlanks':
@@ -120,7 +137,7 @@ export default function QuestionEditor({ quizDetails, setQuizDetails } : any) {
           <FillInBlanksEditor
             question={fibQuestion}
             onSave={(data) => handleSave(data, index)}
-            onCancel={handleCancel}
+            onCancel={() => handleCancel(index)}
           />
         );
       default:

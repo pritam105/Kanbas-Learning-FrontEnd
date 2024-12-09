@@ -9,7 +9,8 @@ export default function QuizDetails() {
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const quiz = useSelector((state: any) => qid ? state.quizzes.quizzes.find((q: any) => q._id === qid) : {});
+    // const quiz = useSelector((state: any) => qid ? state.quizzes.quizzes.find((q: any) => q._id === qid) : {});
+    const [quiz, setQuiz] = useState<any>();
 
     const [ attemptVisible, setAttemptVisible ] = useState<any>(false);
 
@@ -17,6 +18,7 @@ export default function QuizDetails() {
         if (cid && qid) {
             quizClient.fetchQuizDetails(cid, qid)
                 .then(details => {
+                    setQuiz(details);
                     dispatch(reduxSetQuizDetails(details));
                 })
                 .catch(error => console.error('Failed to fetch quiz details:', error));
@@ -82,8 +84,7 @@ export default function QuizDetails() {
                         ["Assignment Group", quiz.assignmentGroup],
                         ["Shuffle Answers", quiz.shuffleAnswers ? 'Yes' : 'No'],
                         ["Time Limit", `${quiz.timeLimit} minutes`],
-                        ["Multiple Attempts", quiz.multipleAttempts ? 'Yes' : 'No'],
-                        ["How Many Attempts", quiz.HowManyAttempts],
+                        ["Allowed Attempts", quiz.allowedAttempts ],
                         ["Show Correct Answers", quiz.showCorrectAnswers],
                         ["Access Code", quiz.accessCode],
                         ["One Question at a Time", quiz.oneQuestionAtATime ? 'Yes' : 'No'],

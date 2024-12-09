@@ -23,12 +23,16 @@ interface Props {
 
 function MultipleChoiceEditor({ question: initialQuestion, onSave, onCancel }: Props) {
   const [question, setQuestion] = useState<Question>(initialQuestion); // Use the passed-in question  
-  // const [question, setQuestion] = useState<Question>({
-  //   title: '',
-  //   points: 1,
-  //   questionText: '',
-  //   choices: [{ text: '', isCorrect: true }]
-  // });
+  const [isEditMode, setIsEditMode] = useState(false); // Track if in edit mode
+
+  const handleEdit = () => {
+    setIsEditMode(true); // Switch to edit mode
+  };
+
+  const handleSave = () => {
+    onSave(question); // Call the onSave function passed as a prop
+    setIsEditMode(false); // Exit edit mode
+  };
 
   const handleAddChoice = () => {
     setQuestion({
@@ -66,6 +70,7 @@ function MultipleChoiceEditor({ question: initialQuestion, onSave, onCancel }: P
         placeholder="Question Title"
         value={question.title}
         onChange={(e) => setQuestion({ ...question, title: e.target.value })}
+        disabled = {!isEditMode}
       />
       <h4>pts:</h4>
       <input
@@ -74,6 +79,7 @@ function MultipleChoiceEditor({ question: initialQuestion, onSave, onCancel }: P
         placeholder="Points"
         value={question.points}
         onChange={(e) => setQuestion({ ...question, points: parseInt(e.target.value, 10) })}
+        disabled = {!isEditMode}
       />
       <h4>Question:</h4>
       <ReactQuill
@@ -88,11 +94,13 @@ function MultipleChoiceEditor({ question: initialQuestion, onSave, onCancel }: P
             name="correctAnswer"
             checked={choice.isCorrect}
             onChange={() => handleChoiceCorrectChange(index)}
+            disabled = {!isEditMode}
           />
           <input
             type="text"
             value={choice.text}
             onChange={(e) => handleChoiceChange(index, e.target.value)}
+            disabled = {!isEditMode}
             style={{ marginLeft: '10px', flexGrow: 1 }}
           />
           {question.choices.length > 1 && (
@@ -103,9 +111,15 @@ function MultipleChoiceEditor({ question: initialQuestion, onSave, onCancel }: P
         </div>
       ))}
       <div className="mt-3">
-        <button className="btn btn-sm btn-secondary "onClick={handleAddChoice}>Add Answer</button>
-        <button className="btn btn-sm btn-success ms-2" onClick={() => onSave(question)}>Save</button>
-        <button className="btn btn-sm btn-danger ms-2" onClick={onCancel}>Cancel</button>
+      {!isEditMode ? (
+          <button className="btn btn-sm btn-primary ms-2" onClick={handleEdit}>Edit</button>
+        ) : (
+          <>
+          <button className="btn btn-sm btn-secondary "onClick={handleAddChoice}>Add Option</button>
+          <button className="btn btn-sm btn-success ms-2" onClick={handleSave}>Save</button>
+          <button className="btn btn-sm btn-danger ms-2" onClick={onCancel}>Remove</button>
+        </>
+        )}
       </div>
       <br/>
     </div>
