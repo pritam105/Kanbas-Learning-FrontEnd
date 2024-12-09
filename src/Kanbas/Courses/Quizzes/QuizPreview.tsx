@@ -4,6 +4,7 @@ import MultipleChoiceQuestion from './QuizPreview/MultipleChoiceQuestion';
 import TrueFalseQuestion from './QuizPreview/TrueFalseQuestion';
 import FillInBlanksQuestion from './QuizPreview/FillInBlanksQuestion';
 import * as quizClient from "./client";
+import { useSelector } from "react-redux";
 
 export interface QuestionProps {
   question: Question;
@@ -33,10 +34,12 @@ export interface AnswerMap {
 }
 
 function QuizPreviewScreen() {
-//   const { quizId } = useParams<{ quizId?: string }>();
   const { cid, qid } = useParams();
   const [quiz, setQuiz] = useState<any>(null);
   const [answers, setAnswers] = useState<AnswerMap>({});
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+
+  const userId = currentUser._id;
 
   useEffect(() => {
     const getQuiz = async () => {
@@ -44,10 +47,10 @@ function QuizPreviewScreen() {
       try {
         const data = await quizClient.fetchQuizDetails(cid, qid);
         setQuiz(data);
-        
+
         const initialAnswers: AnswerMap = {};
         data.questions.forEach((question: any) => {
-          initialAnswers[question.id] = '';
+          initialAnswers[question._id] = '';
         });
         setAnswers(initialAnswers);
       } catch (error) {
@@ -59,9 +62,30 @@ function QuizPreviewScreen() {
   }, [cid, qid]);
 
   const handleAnswerChange = (questionId: string, answer: any) => {
-    console.log("questionId: " + questionId);
-    console.log("answer: " + answer);
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
+  };
+
+  const handleSubmit = async () => {
+    if (!userId || !qid) return;
+    try {
+      const attemptData = {
+        userId,
+        quizId: qid,
+        answers: Object.keys(answers).map(questionId => ({
+          questionId,
+          answer: answers[questionId]
+        }))
+      };
+      console.log("attempt Data: " + JSON.stringify(attemptData));
+
+      const result = await quizClient.createAttempt(attemptData);
+
+      console.log('Attempt result:', result);
+      alert(`Quiz submitted! Your score is ${result.score}`);
+    } catch (error) {
+      console.error('Failed to submit quiz attempt:', error);
+      alert('Failed to submit your quiz attempt. Please try again.');
+    }
   };
 
   if (!quiz) return <p>Loading...</p>;
@@ -96,6 +120,7 @@ function QuizPreviewScreen() {
           />
         );
       })}
+      <button onClick={handleSubmit}>Submit Quiz</button>
     </div>
   );
 }

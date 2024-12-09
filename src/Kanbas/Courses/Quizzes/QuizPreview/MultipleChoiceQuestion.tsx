@@ -2,7 +2,7 @@ import React from 'react';
 
 interface QuestionProps {
     question: {
-      id: string;
+      _id: string;
       title: string;
       questionText: string;
       choices?: { text: string; isCorrect: boolean }[];
@@ -22,7 +22,7 @@ function MultipleChoiceQuestion({ question, answer, onChange }: QuestionProps) {
         <label key={index}>
           <input
             type="radio"
-            name={`question-${question.id}`}
+            name={`question-${question._id}`}
             checked={answer === choice.text}
             onChange={() => onChange(choice.text)}
           />

@@ -18,7 +18,7 @@ function FillInBlanksQuestion({ question, answer, onChange }: QuestionProps) {
     <div>
       <h4>{question.title}</h4>
       <p>{question.questionText}</p>
-      {question.choices && question.choices.map((choice, index) => (
+      {question.correctAnswers && question.correctAnswers.map((correctAnswer, index) => (
         <div key={index}>
           <input
             type="text"

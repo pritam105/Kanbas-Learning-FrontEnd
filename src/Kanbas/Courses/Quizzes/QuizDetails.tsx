@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setQuizDetails as reduxSetQuizDetails } from './reducer';
@@ -6,20 +6,39 @@ import * as quizClient from './client';
 
 export default function QuizDetails() {
     const { cid, qid } = useParams();
+    const { currentUser } = useSelector((state: any) => state.accountReducer);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const quiz = useSelector((state: any) => qid ? state.quizzes.quizzes.find((q: any) => q._id === qid) : {});
+
+    const [ attemptVisible, setAttemptVisible ] = useState<any>(false);
 
     useEffect(() => {
         if (cid && qid) {
             quizClient.fetchQuizDetails(cid, qid)
                 .then(details => {
-                    // dispatch({ type: 'SET_QUIZ_DETAILS', payload: details });
                     dispatch(reduxSetQuizDetails(details));
                 })
                 .catch(error => console.error('Failed to fetch quiz details:', error));
         }
+
+        getAttempts();
     }, [cid, qid, dispatch]);
+
+    const getAttempts = async () => {
+        if (currentUser.role === "FACULTY") {
+            setAttemptVisible(true);
+        } else {
+            const attempts = await quizClient.getAttemptsForUserAndQuiz(currentUser._id, qid);
+            // console.log("users attempts done" + attempts.attemptCount);
+            // console.log(" allowed attempts for this quiz" + quiz.allowedAttempts);
+            if (attempts.attemptCount >= quiz.allowedAttempts) {
+                setAttemptVisible(false);
+            } else {
+                setAttemptVisible(true);
+            }
+        }
+    }
 
     const handleEdit = () => {
         navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}`);
@@ -33,14 +52,28 @@ export default function QuizDetails() {
         return <div>Loading...</div>;
     }
 
+
     return (
         <div style={{ maxWidth: '800px', margin: '20px auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                <button onClick={handlePreview} style={{ margin: '5px' }}>Preview</button>
-                <button onClick={handleEdit} style={{ margin: '5px' }}>Edit</button>
+            {currentUser.role !== "FACULTY" && attemptVisible ? (
+                    <button onClick={handlePreview} className="btn btn-primary mb-3">
+                    Attempt Quiz
+                    </button>
+                    ) : currentUser.role !== "FACULTY" && !attemptVisible ? (
+                        <p>You have no more attempts left!</p>
+                    ) : (
+                        <button onClick={handlePreview} className="btn btn-primary mb-3">
+                        Preview
+                        </button>
+                     )}
+                
+                {currentUser.role == "FACULTY" && <button onClick={handleEdit} className="btn btn-primary mb-3 ms-3">Edit</button>}
             </div>
             <hr />
-            <h2 style={{ textAlign: 'left' }}>{quiz.title}</h2>
+            <h2 style={{ textAlign: 'center' }}>{quiz.title}</h2>
+            <hr />
+            <br />
             <div style={{ textAlign: 'center' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     {[
