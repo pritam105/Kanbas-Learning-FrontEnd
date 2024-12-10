@@ -111,14 +111,6 @@ export default function Quizzes() {
           { currentUser.role === "FACULTY" && <button onClick={handleAddQuiz} className="btn btn-lg btn-danger me-1">
             <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} /> Add Quiz
           </button>}
-          {/* <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-              <IoEllipsisVertical className="position-relative" style={{ fontSize: '30px' }} />
-            </button> */}
-            {/* <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a className="dropdown-item" href="#" onClick={() => handleDeleteAll()}>Delete All Quizzes</a></li>
-              <li><a className="dropdown-item" href="#" onClick={() => handlePublishAll(true)}>Publish All</a></li>
-              <li><a className="dropdown-item" href="#" onClick={() => handlePublishAll(false)}>Unpublish All</a></li>
-            </ul> */}
         </div>
       </div>
       <hr />
@@ -127,7 +119,7 @@ export default function Quizzes() {
     <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
       <div className="wd-title p-3 ps-2 bg-secondary">
         <MdArrowDropDown className="me-1 fs-3" />
-        Assignment Quizzes
+         Quizzes
         </div>
         <ul className="wd-lessons list-group rounded-0 wd-padded-left wd-bg-color-green">
         {quizzes.map((quiz: any) => {

@@ -121,7 +121,7 @@ function QuizPreviewScreen() {
         );
       })}
       <button className = "btn btn-danger" onClick={handleSubmit}>Submit Quiz</button>
-      <button className = "btn btn-secondary ms-2" onClick={handleEdit}>Edit this Quiz</button>
+      { currentUser.role === "FACULTY" && <button className = "btn btn-secondary ms-2" onClick={handleEdit}>Edit this Quiz</button>}
     </div>
   );
 }
