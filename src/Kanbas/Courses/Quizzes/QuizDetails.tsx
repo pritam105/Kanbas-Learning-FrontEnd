@@ -11,7 +11,7 @@ export default function QuizDetails() {
     const dispatch = useDispatch();
     // const quiz = useSelector((state: any) => qid ? state.quizzes.quizzes.find((q: any) => q._id === qid) : {});
     const [quiz, setQuiz] = useState<any>();
-
+    const [ initialAttempt, setInitialAttempt ] = useState<boolean>(false);
     const [ attemptVisible, setAttemptVisible ] = useState<any>(false);
 
     useEffect(() => {
@@ -33,7 +33,10 @@ export default function QuizDetails() {
         } else {
             const attempts = await quizClient.getAttemptsForUserAndQuiz(currentUser._id, qid);
             // console.log("users attempts done" + attempts.attemptCount);
-            console.log(" allowed attempts for this quiz " + JSON.stringify(quiz));
+            // console.log(" allowed attempts for this quiz " + JSON.stringify(quiz));
+            if (attempts.attemptCount === 0) {
+                setInitialAttempt(true);
+            }
             if (attempts.attemptCount >= quiz.allowedAttempts) {
                 setAttemptVisible(false);
             } else {
@@ -81,7 +84,7 @@ export default function QuizDetails() {
                      )}
                 
                 {currentUser.role == "FACULTY" && <button onClick={handleEdit} className="btn btn-primary mb-3 ms-3">Edit</button>}
-                {currentUser.role == "STUDENT" && <button onClick={handleLastAttempt} className="btn btn-primary mb-3 ms-3">View Last Attempt</button>}
+                {currentUser.role == "STUDENT" && !initialAttempt && <button onClick={handleLastAttempt} className="btn btn-primary mb-3 ms-3">View Last Attempt</button>}
             </div>
             <hr />
             <h2 style={{ textAlign: 'center' }}>{quiz.title}</h2>
@@ -96,7 +99,7 @@ export default function QuizDetails() {
                         ["Shuffle Answers", quiz.shuffleAnswers ? 'Yes' : 'No'],
                         ["Time Limit", `${quiz.timeLimit} minutes`],
                         ["Allowed Attempts", quiz.allowedAttempts ],
-                        ["Show Correct Answers", quiz.showCorrectAnswers],
+                        ["Show Correct Answers", quiz.showCorrectAnswers ? 'Yes' : 'No'],
                         ["Access Code", quiz.accessCode],
                         ["One Question at a Time", quiz.oneQuestionAtATime ? 'Yes' : 'No'],
                         ["Webcam Required", quiz.webcamRequired ? 'Yes' : 'No'],

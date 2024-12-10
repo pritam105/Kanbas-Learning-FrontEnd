@@ -22,14 +22,15 @@ function QuizEditor() {
     _id: `quiz-${Date.now()}`,
     title: '',
     description: '',
+    points: 80,
     quizType: 'Graded Quiz',
     assignmentGroup: 'Quizzes',
     shuffleAnswers: false,
     timeLimit: 20,
     allowedAttempts: 1,
-    showCorrectAnswers: '',
+    showCorrectAnswers: false,
     accessCode: '',
-    oneQuestionAtATime: true,
+    oneQuestionAtATime: false,
     webcamRequired: false,
     lockQuestionsAfterAnswering: false,
     dueDate: '',
@@ -161,6 +162,10 @@ function QuizEditor() {
           <input type="number" name="timeLimit" value={quizDetails.timeLimit}
                  onChange={handleChange} className="form-control mb-2" placeholder="Time Limit (minutes)" />
           
+          <label>Points</label>
+          <input type="number" name="points" value={quizDetails.points}
+                 onChange={handleChange} className="form-control mb-2" />
+
           <label>Attempts Allowed</label>
           <input type="number" name="allowedAttempts" value={quizDetails.allowedAttempts}
                  onChange={handleChange} className="form-control mb-2" />
@@ -170,8 +175,8 @@ function QuizEditor() {
                  onChange={handleChange} className="form-control mb-2" value={quizDetails.accessCode} />
           <br/>
 
-          <label>One Question at a Time</label>
-          <select name="oneQuestionAtATime" value={quizDetails.oneQuestionAtATime.toString()} onChange={handleChange}
+          <label>Show Correct Answers</label>
+          <select name="showCorrectAnswers" value={quizDetails.showCorrectAnswers.toString()} onChange={handleChange}
                   className="form-select">
             <option value="true">Yes</option>
             <option value="false">No</option>
@@ -186,6 +191,14 @@ function QuizEditor() {
           </select>
           <br/>
 
+          <label>One Question at a Time</label>
+          <select name="oneQuestionAtATime" value={quizDetails.oneQuestionAtATime.toString()} onChange={handleChange}
+                  className="form-select">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+          <br/>
+          
           <label>Lock Questions After Answering</label>
           <select name="lockQuestionsAfterAnswering" value={quizDetails.lockQuestionsAfterAnswering.toString()} onChange={handleChange}
                   className="form-select">

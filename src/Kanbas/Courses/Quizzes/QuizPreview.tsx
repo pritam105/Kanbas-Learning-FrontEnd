@@ -92,7 +92,8 @@ function QuizPreviewScreen() {
   return (
     <div>
       <h1>{quiz.title}</h1>
-      <p>{quiz.description}</p>
+      <p dangerouslySetInnerHTML={{ __html: quiz.description }} />
+
       {quiz.questions.map((question: any) => {
         let QuestionComponent = null;
 

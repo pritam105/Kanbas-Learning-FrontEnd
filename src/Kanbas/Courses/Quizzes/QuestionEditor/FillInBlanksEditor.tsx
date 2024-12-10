@@ -99,7 +99,8 @@ function FillInBlanksEditor({ question: initialQuestion, onSave, onCancel }: Fil
           <button className="btn btn-sm btn-primary" onClick={handleEdit}>Edit</button>
         ) : (
           <>
-          <button className="btn btn-sm btn-secondary "onClick={disableEditMode}>Cancel</button>
+          <button className="btn btn-sm btn-secondary "onClick={addAnswer}>Add Answer</button>
+          <button className="btn btn-sm btn-secondary ms-2"onClick={disableEditMode}>Cancel</button>
           <button className="btn btn-sm btn-success ms-2" onClick={handleSave}>Save</button>
           <button className="btn btn-sm btn-danger ms-2" onClick={onCancel}>Remove</button>
         </>

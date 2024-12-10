@@ -35,6 +35,7 @@ function QuizAttemptResultsScreen() {
   const [timestamp, setTimestamp] = useState<any>();  // To store timestamp
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const userId = currentUser._id;
+  const [ attemptCount, setAttemptCount ] = useState();
 
   const getQuizData = async () => {
     if (!cid || !qid) return;
@@ -45,6 +46,7 @@ function QuizAttemptResultsScreen() {
       // Fetch attempt data for the user
       const attemptData = await quizClient.getAttemptsForUserAndQuiz(userId, qid); // Assume this API fetches user attempt data
       setUserAnswers(attemptData.answers);  // Store user's answers
+      setAttemptCount(attemptData.attemptCount);
 
       const initialCorrectAnswers: AnswerMap = {};
       quizData.questions.forEach((question: any) => {
@@ -67,8 +69,11 @@ function QuizAttemptResultsScreen() {
       let totalScore = 0;
       quizData.questions.forEach((question: any) => {
         const ans = attemptData.answers.find((ans: any) => ans.questionId === question._id);
-        
-        if (ans.answer === initialCorrectAnswers[question._id]) {
+        if (initialCorrectAnswers[question._id].includes("::")) {
+            if (initialCorrectAnswers[question._id].includes(ans.answer)) {
+                totalScore += question.points || 1;      
+            }
+        } else if (ans.answer === initialCorrectAnswers[question._id]) {
           totalScore += question.points || 1;
         }
       });
@@ -92,8 +97,27 @@ function QuizAttemptResultsScreen() {
   
     const userAnswer = userAnswers.find((ans: any) => ans.questionId === questionId);
 
-    if (userAnswer && userAnswer.answer === correctAnswers[questionId]) return { isCorrect: true};
-    else return { isCorrect: false};
+    if (userAnswer && correctAnswers[questionId].includes("::")) {
+        if (correctAnswers[questionId].includes(userAnswer.answer)) return {isCorrect: true};
+        else return { isCorrect: false};
+
+    } else if (userAnswer && userAnswer.answer === correctAnswers[questionId]) {
+        return { isCorrect: true};
+    } else return { isCorrect: false};
+  };
+
+  const shouldDisplayCorrectAnswers = (questionId: string) => {
+    // const userAttempt = userAnswers.find((attempt: any) => attempt.questionId === questionId);
+    
+    if (!attemptCount || !quiz) return false;
+
+    if (currentUser.role === 'FACULTY') {
+      // Faculty: Show correct answers if the showCorrectAnswers flag is true
+      return quiz.showCorrectAnswers;
+    } else {
+      const isLastAttempt = attemptCount === quiz.allowedAttempts;
+      return isLastAttempt && quiz.showCorrectAnswers;
+    }
   };
 
   if (!quiz) return <p>Loading...</p>;
@@ -109,7 +133,9 @@ function QuizAttemptResultsScreen() {
       {quiz.questions.map((question: any) => {
         let QuestionComponent = null;
         const { isCorrect } = getQuestionResult(question._id); // Get result for each question
-        console.log("isCorrect: " + isCorrect);
+        // console.log("isCorrect: " + isCorrect);
+        const showCorrectAnswer = shouldDisplayCorrectAnswers(question._id);
+        console.log("showCorrectAnswer flag: " + showCorrectAnswer);
         switch (question.type) {
           case 'multipleChoice':
             QuestionComponent = MultipleChoiceQuestion;
@@ -133,8 +159,13 @@ function QuizAttemptResultsScreen() {
               isCorrect={isCorrect}
             />
             <div className="card-footer">
+              <h6>{isCorrect ? 'Correct!' : 'Wrong Answer!'}</h6>
               <h6>Your Answer: {userAnswer ? userAnswer.answer : 'N/A'}</h6>
-              <h6>{isCorrect ? 'Correct!' : 'Incorrect'}</h6>
+              {showCorrectAnswer && !isCorrect && (
+              <div className="correct-answer">
+                <h6>Correct Answer(s): {correctAnswers[question._id]}</h6>
+              </div>
+            )}
             </div>
           </div>
         );

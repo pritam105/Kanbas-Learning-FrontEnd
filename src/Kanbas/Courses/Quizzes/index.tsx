@@ -16,6 +16,7 @@ export default function Quizzes() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const quizzes = useSelector((state: any) => state.quizzes.quizzes.filter((q: any) => q.course === cid));
+  const [attemptDataMap, setAttemptDataMap] = useState<any>({});
 
   useEffect(() => {
     const loadQuizzes = async () => {
@@ -26,6 +27,13 @@ export default function Quizzes() {
         : quizzesData;
 
       dispatch(setQuizzes(filteredQuizzes));
+      
+      const attemptData: any = {};
+      for (const quiz of filteredQuizzes) {
+        const userAttempt = await quizClient.getAttemptsForUserAndQuiz(currentUser._id, quiz._id);
+        attemptData[quiz._id] = userAttempt; // Store the attempt data for each quiz
+      }
+      setAttemptDataMap(attemptData);
       }
     };
     loadQuizzes();
@@ -83,6 +91,18 @@ export default function Quizzes() {
     }
   };
 
+  const getLastAttemptScore = (quizId: string, quizPoints: number) => {
+    const attemptData = attemptDataMap[quizId];
+    if (!attemptData) return '-- / ' + (quizPoints || 0); // No attempt yet
+
+    const { attemptCount, score } = attemptData;
+    if (attemptCount === 0) {
+      return `-- / ${quizPoints || 0}`; // No attempt made yet
+    } else {
+      return `${score} / ${quizPoints || 0}`; // Show score from last attempt
+    }
+  };
+
   return (
     <div id="wd-quizzes">
       <div className="d-flex justify-content-between mb-2">
@@ -112,6 +132,8 @@ export default function Quizzes() {
         <ul className="wd-lessons list-group rounded-0 wd-padded-left wd-bg-color-green">
         {quizzes.map((quiz: any) => {
           const availability = getQuizAvailability(quiz.availableDate, quiz.untilDate);
+          const lastAttemptScore = getLastAttemptScore(quiz._id, quiz.points);
+
           return (
           <li key={quiz._id} className="wd-lesson list-group-item d-flex align-items-center p-3">
             <div className="icon-container me-2">
@@ -134,7 +156,7 @@ export default function Quizzes() {
                       <b>{getQuizAvailability(quiz.availableDate, quiz.untilDate)}</b> | 
                       <b> Due Date:</b> {formatDateForInput(quiz.dueDate) || 'No Due Date'} | 
                         {quiz.questions?.length || 0} <b>Questions</b> | 
-                      {quiz.points || 0} pts
+                        {lastAttemptScore} pts
                   </span>
                 </p>
               </h6>
@@ -148,14 +170,21 @@ export default function Quizzes() {
                 
                 <ul className="dropdown-menu" aria-labelledby="quizMenuButton">
                  <li>
-        <a className="dropdown-item" onClick={() => handleEdit(quiz._id)}>Edit</a>
-    </li>
-    <li>
-        <a className="dropdown-item" href={`#/Kanbas/Courses/${cid}/Quizzes`} onClick={() => handleDelete(quiz._id)}>Delete</a>
-    </li>
-    <li>
-        <a className="dropdown-item" href={`#/Kanbas/Courses/${cid}/Quizzes`} onClick={() => togglePublishStatus(quiz._id, quiz.published)}>Publish/Unpublish</a>
-    </li>
+                    <a className="dropdown-item" 
+                       onClick={() => handleEdit(quiz._id)}>Edit</a>
+                </li>
+                <li>
+                    <a className="dropdown-item" 
+                       href={`#/Kanbas/Courses/${cid}/Quizzes`} 
+                       onClick={() => handleDelete(quiz._id)}>Delete</a>
+                </li>
+                <li>
+                    <a className="dropdown-item" 
+                       href={`#/Kanbas/Courses/${cid}/Quizzes`} 
+                       onClick={() => togglePublishStatus(quiz._id, quiz.published)}
+                      >
+                      {quiz.published ? 'Unpublish' : 'Publish'}</a>
+                </li>
                 </ul>
              </div>}
             </div>

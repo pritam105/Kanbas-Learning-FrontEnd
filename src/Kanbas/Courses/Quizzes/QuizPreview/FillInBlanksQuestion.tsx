@@ -26,18 +26,18 @@ function FillInBlanksQuestion({ question, answer, onChange, isCorrect }: Questio
 
       {/* Answer Input Fields */}
       <div className="card-body">
-        {question.correctAnswers && question.correctAnswers.map((correctAnswer, index) => (
-          <div key={index} className="mb-3">
+        {question.correctAnswers &&
+          <div className="mb-3">
             <input
               type="text"
               value={answer || ''}
               onChange={isReadOnly ? undefined : (e) => onChange?.(e.target.value)} // Disable onChange if read-only
               disabled={isReadOnly} // Disable input when in results mode
               className="form-control"
-              placeholder={`Answer ${index + 1}`}
+              placeholder={`Answer`}
             />
           </div>
-        ))}
+        }
       </div>
     </div>
   );
