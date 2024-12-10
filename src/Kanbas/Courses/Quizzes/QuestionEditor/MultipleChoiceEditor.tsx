@@ -34,6 +34,10 @@ function MultipleChoiceEditor({ question: initialQuestion, onSave, onCancel }: P
     setIsEditMode(false); // Exit edit mode
   };
 
+  const disableEditMode = () => {
+    setIsEditMode(false); // Exit edit mode
+  }
+
   const handleAddChoice = () => {
     setQuestion({
       ...question,
@@ -85,6 +89,7 @@ function MultipleChoiceEditor({ question: initialQuestion, onSave, onCancel }: P
       <ReactQuill
         theme="snow"
         value={question.questionText}
+        readOnly = {!isEditMode}
         onChange={(value) => setQuestion({ ...question, questionText: value })}
       />
       {question.choices.map((choice, index) => (
@@ -112,10 +117,11 @@ function MultipleChoiceEditor({ question: initialQuestion, onSave, onCancel }: P
       ))}
       <div className="mt-3">
       {!isEditMode ? (
-          <button className="btn btn-sm btn-primary ms-2" onClick={handleEdit}>Edit</button>
+          <button className="btn btn-sm btn-primary" onClick={handleEdit}>Edit</button>
         ) : (
           <>
-          <button className="btn btn-sm btn-secondary "onClick={handleAddChoice}>Add Option</button>
+          <button className="btn btn-sm btn-primary "onClick={handleAddChoice}>Add Option</button>
+          <button className="btn btn-sm btn-secondary ms-2"onClick={disableEditMode}>Cancel</button>
           <button className="btn btn-sm btn-success ms-2" onClick={handleSave}>Save</button>
           <button className="btn btn-sm btn-danger ms-2" onClick={onCancel}>Remove</button>
         </>

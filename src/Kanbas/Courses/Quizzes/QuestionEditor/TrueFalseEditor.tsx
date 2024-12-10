@@ -21,6 +21,10 @@ function TrueFalseEditor({ question: initialQuestion, onSave, onCancel }: TrueFa
     setIsEditMode(true); // Switch to edit mode
   };
 
+  const disableEditMode = () => {
+    setIsEditMode(false); // Exit edit mode
+  }
+
   const handleSave = () => {
     onSave(question); // Call the onSave function passed as a prop
     setIsEditMode(false); // Exit edit mode
@@ -54,6 +58,7 @@ function TrueFalseEditor({ question: initialQuestion, onSave, onCancel }: TrueFa
       <ReactQuill
         theme="snow"
         value={question.questionText}
+        readOnly = {!isEditMode}
         onChange={(value) => setQuestion({ ...question, questionText: value })}
         className="mb-2"
       />
@@ -83,9 +88,10 @@ function TrueFalseEditor({ question: initialQuestion, onSave, onCancel }: TrueFa
       </div>
       <div className="mt-3">
       {!isEditMode ? (
-          <button className="btn btn-sm btn-primary ms-2" onClick={handleEdit}>Edit</button>
+          <button className="btn btn-sm btn-primary" onClick={handleEdit}>Edit</button>
         ) : (
           <>
+            <button className="btn btn-sm btn-secondary" onClick={disableEditMode}>Cancel</button>
             <button className="btn btn-sm btn-success ms-2" onClick={handleSave}>Save</button>
             <button className="btn btn-sm btn-danger ms-2" onClick={onCancel}>Remove</button>
           </>

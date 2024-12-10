@@ -39,13 +39,15 @@ export default function QuestionEditor({ quizDetails, setQuizDetails } : any) {
       updatedQuestions[index] = questionData;
       setQuizDetails((prev: any) => ({
         ...prev,
-        questions: updatedQuestions
+        questions: updatedQuestions,
+        points: updatedQuestions.reduce((acc: number, question: any) => acc + (question.points || 0), 0)  // Recalculate total points
       }));
     } else {
       // Add the new question
       setQuizDetails((prev: any) => ({
         ...prev,
-        questions: [...prev.questions, questionData]
+        questions: [...prev.questions, questionData],
+        points: [...prev.questions, questionData].reduce((acc: number, question: any) => acc + (question.points || 0), 0)  // Recalculate total points
       }));
     }
     setShowNewQuestionEditor(false);
@@ -62,12 +64,12 @@ export default function QuestionEditor({ quizDetails, setQuizDetails } : any) {
     if (index !== undefined) {
       // Remove the question at the given index
       const updatedQuestions = [...quizDetails.questions];
-      console.log("questions before slice " + JSON.stringify(updatedQuestions));
       updatedQuestions.splice(index, 1); // Removes the question at the given index
-      console.log("questions after slice " + JSON.stringify(updatedQuestions));
+
       setQuizDetails((prev: any) => ({
         ...prev,
-        questions: updatedQuestions
+        questions: updatedQuestions,
+        points: updatedQuestions.reduce((acc: number, question: any) => acc + (question.points || 0), 0)  // Recalculate total points
       }));
     }
     // console.log(" after setting state " + JSON.stringify(quizDetails.questions));
@@ -151,6 +153,7 @@ export default function QuestionEditor({ quizDetails, setQuizDetails } : any) {
       <button onClick={addQuestion} className="btn btn-primary mb-3">
         Add Question
       </button>
+      <h4>Total Points: {quizDetails.questions.reduce((acc: number, question: any) => acc + (question.points || 0), 0)}</h4>
 
       {showNewQuestionEditor && (
       <>

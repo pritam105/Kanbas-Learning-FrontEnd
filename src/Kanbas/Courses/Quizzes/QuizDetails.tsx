@@ -18,13 +18,13 @@ export default function QuizDetails() {
         if (cid && qid) {
             quizClient.fetchQuizDetails(cid, qid)
                 .then(details => {
+                    console.log("quiz fetched inside useeffect " + JSON.stringify(details));
                     setQuiz(details);
                     dispatch(reduxSetQuizDetails(details));
                 })
                 .catch(error => console.error('Failed to fetch quiz details:', error));
         }
 
-        getAttempts();
     }, [cid, qid, dispatch]);
 
     const getAttempts = async () => {
@@ -33,7 +33,7 @@ export default function QuizDetails() {
         } else {
             const attempts = await quizClient.getAttemptsForUserAndQuiz(currentUser._id, qid);
             // console.log("users attempts done" + attempts.attemptCount);
-            // console.log(" allowed attempts for this quiz" + quiz.allowedAttempts);
+            console.log(" allowed attempts for this quiz " + JSON.stringify(quiz));
             if (attempts.attemptCount >= quiz.allowedAttempts) {
                 setAttemptVisible(false);
             } else {
@@ -42,8 +42,18 @@ export default function QuizDetails() {
         }
     }
 
+    useEffect(() => {
+        if (quiz) {
+            getAttempts();
+        }
+    }, [quiz, currentUser, qid]);
+
     const handleEdit = () => {
         navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}`);
+    };
+
+    const handleLastAttempt = () => {
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/Submission`);
     };
 
     const handlePreview = () => {
@@ -71,6 +81,7 @@ export default function QuizDetails() {
                      )}
                 
                 {currentUser.role == "FACULTY" && <button onClick={handleEdit} className="btn btn-primary mb-3 ms-3">Edit</button>}
+                {currentUser.role == "STUDENT" && <button onClick={handleLastAttempt} className="btn btn-primary mb-3 ms-3">View Last Attempt</button>}
             </div>
             <hr />
             <h2 style={{ textAlign: 'center' }}>{quiz.title}</h2>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import MultipleChoiceQuestion from './QuizPreview/MultipleChoiceQuestion';
 import TrueFalseQuestion from './QuizPreview/TrueFalseQuestion';
 import FillInBlanksQuestion from './QuizPreview/FillInBlanksQuestion';
@@ -28,6 +28,7 @@ export interface AnswerMap {
 
 function QuizPreviewScreen() {
   const { cid, qid } = useParams();
+  const navigate = useNavigate();
   const [quiz, setQuiz] = useState<any>(null);
   const [answers, setAnswers] = useState<AnswerMap>({});
   const { currentUser } = useSelector((state: any) => state.accountReducer);
@@ -58,6 +59,10 @@ function QuizPreviewScreen() {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
   };
 
+  const handleEdit = () => {
+    navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}`);
+  };
+
   const handleSubmit = async () => {
     if (!userId || !qid) return;
     try {
@@ -74,7 +79,8 @@ function QuizPreviewScreen() {
       const result = await quizClient.createAttempt(attemptData);
 
       console.log('Attempt result:', result);
-      alert(`Quiz submitted! Your score is ${result.score}`);
+      navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/Submission`);
+      // alert(`Quiz submitted! Your score is ${result.score}`);
     } catch (error) {
       console.error('Failed to submit quiz attempt:', error);
       alert('Failed to submit your quiz attempt. Please try again.');
@@ -113,7 +119,8 @@ function QuizPreviewScreen() {
           />
         );
       })}
-      <button className = "btn btn-primary" onClick={handleSubmit}>Submit Quiz</button>
+      <button className = "btn btn-danger" onClick={handleSubmit}>Submit Quiz</button>
+      <button className = "btn btn-secondary ms-2" onClick={handleEdit}>Edit this Quiz</button>
     </div>
   );
 }

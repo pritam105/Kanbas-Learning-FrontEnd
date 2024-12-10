@@ -39,44 +39,35 @@ function QuizEditor() {
     questions: []
   });
 
+  const formatDateForInput = (dateString: any) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
   useEffect(() => {
     if (cid && qid !== "new") {
         quizClient.fetchQuizDetails(cid, qid!).then(details => {
         dispatch(reduxSetQuizDetails(details));
-        setQuizDetails(details);
+        setQuizDetails({ ...details, 
+          dueDate: details.dueDate ? formatDateForInput(details.dueDate) : '',
+          availableDate: details.availableDate ? formatDateForInput(details.availableDate) : '',
+          untilDate: details.untilDate ? formatDateForInput(details.untilDate) : ''  
+        });
       }).catch(error => console.error('Failed to fetch quiz details:', error));
     }
   }, [cid, qid, dispatch]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
+    // console.log(" targte value " + e.target);
     setQuizDetails(prev => ({ ...prev, [name]: value }));
   };
-
-  // const handleSave = async (publish: boolean) => {
-  //   setQuizDetails((prev) => ({
-  //     ...prev,
-  //     published: publish,
-  //   }));
-  //   let createdQuiz;
-
-  //   if (qid !== "new") {
-  //     // console.log("logging quiz details " + quizDetails);
-  //     await quizClient.updateQuizDetails(qid as string, quizDetails);
-  //   } else {
-  //     createdQuiz = await quizClient.createQuiz(cid as string, quizDetails);
-  //   }
-  //   if (publish) {
-  //     navigate(`/Kanbas/Courses/${cid}/Quizzes`);
-  //   } else {
-  //     if (qid === "new") {
-  //       navigate(`/Kanbas/Courses/${cid}/Quizzes/Details/${createdQuiz._id}`);
-  //     } else {
-  //       navigate(`/Kanbas/Courses/${cid}/Quizzes/Details/${qid}`);
-  //     }
-  //   }
-  // };
-
 
   const handleSave = async (publish: boolean) => {
     let savedQuiz;
@@ -101,6 +92,7 @@ function QuizEditor() {
   };
 
   const handleCancel = () => {
+    console.log("due date type" + quiz.dueDate);
     navigate(`/Kanbas/Courses/${cid}/Quizzes`);
   };
 
@@ -126,8 +118,9 @@ function QuizEditor() {
         <>
           <input type="text" name="title" value={quizDetails.title}
                  onChange={handleChange} className="form-control mb-2" placeholder="Unnamed Quiz" />
+          
           <ReactQuill theme="snow" value={quizDetails.description} className="mb-2"
-                      onChange={() => handleChange} />
+                      onChange={(value) => setQuizDetails(prev => ({ ...prev, description: value}))} />
           <br/>
           <br/>
           <br/>
@@ -178,7 +171,7 @@ function QuizEditor() {
           <br/>
 
           <label>One Question at a Time</label>
-          <select name="oneQuestionAtATime" value={quizDetails.oneQuestionAtATime ? "true" : "false"} onChange={handleChange}
+          <select name="oneQuestionAtATime" value={quizDetails.oneQuestionAtATime.toString()} onChange={handleChange}
                   className="form-select">
             <option value="true">Yes</option>
             <option value="false">No</option>
@@ -186,7 +179,7 @@ function QuizEditor() {
           <br/>
 
           <label>Webcam Required</label>
-          <select name="webcamRequired" value={quizDetails.webcamRequired ? "true" : "false"} onChange={handleChange}
+          <select name="webcamRequired" value={quizDetails.webcamRequired.toString()} onChange={handleChange}
                   className="form-select">
             <option value="false">No</option>
             <option value="true">Yes</option>
@@ -194,7 +187,7 @@ function QuizEditor() {
           <br/>
 
           <label>Lock Questions After Answering</label>
-          <select name="lockQuestionsAfterAnswering" value={quizDetails.lockQuestionsAfterAnswering ? "true" : "false"} onChange={handleChange}
+          <select name="lockQuestionsAfterAnswering" value={quizDetails.lockQuestionsAfterAnswering.toString()} onChange={handleChange}
                   className="form-select">
             <option value="false">No</option>
             <option value="true">Yes</option>
@@ -229,7 +222,6 @@ function QuizEditor() {
       )}
       {activeTab === 'question' && (
         <div>
-          {/* Pass the quizDetails and setter to QuestionEditor */}
           <QuestionEditor
             quizDetails={quizDetails} 
             setQuizDetails={setQuizDetails} 

@@ -8,18 +8,22 @@ interface QuestionProps {
       choices?: { text: string; isCorrect: boolean }[];
       isTrue?: boolean;
       correctAnswers?: string[];
-    };
-    answer: any;
-    onChange: (answer: any) => void;
+  };
+  answer: any;
+  onChange?: (answer: any) => void;  // Optional onChange prop for editable mode
+  isCorrect?: boolean;  // Optional isCorrect prop for results mode
 }
 
-function TrueFalseQuestion({ question, answer, onChange }: QuestionProps) {
+function TrueFalseQuestion({ question, answer, onChange, isCorrect }: QuestionProps) {
+  // If isCorrect is provided, render the question in read-only mode
+  const isReadOnly = typeof isCorrect === 'boolean';
+
   return (
-    <div className="card p-3 mb-4 shadow-sm">
+    <div className={`card p-3 mb-4 shadow-sm ${isCorrect ? 'bg-success' : isCorrect === false ? 'bg-danger' : ''}`}>
       {/* Question Title and Description */}
       <div className="card-header">
         <h4 className="card-title">{question.title}</h4>
-        <p className="card-text">{question.questionText}</p>
+        <p className="card-text" dangerouslySetInnerHTML={{ __html: question.questionText }} />
       </div>
 
       {/* True/False Options */}
@@ -30,7 +34,8 @@ function TrueFalseQuestion({ question, answer, onChange }: QuestionProps) {
             className="form-check-input"
             name={`question-${question._id}`}
             checked={answer === true}
-            onChange={() => onChange(true)}
+            onChange={isReadOnly ? undefined : () => onChange?.(true)}  // Disable onChange if read-only
+            disabled={isReadOnly} // Disable input when in results mode
           />
           <label className="form-check-label">True</label>
         </div>
@@ -40,7 +45,8 @@ function TrueFalseQuestion({ question, answer, onChange }: QuestionProps) {
             className="form-check-input"
             name={`question-${question._id}`}
             checked={answer === false}
-            onChange={() => onChange(false)}
+            onChange={isReadOnly ? undefined : () => onChange?.(false)}  // Disable onChange if read-only
+            disabled={isReadOnly} // Disable input when in results mode
           />
           <label className="form-check-label">False</label>
         </div>
