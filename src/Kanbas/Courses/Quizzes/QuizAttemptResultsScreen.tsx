@@ -127,9 +127,9 @@ function QuizAttemptResultsScreen() {
 //   }
 
   return (
-    <div>
-      <h1>{quiz.title} - Attempt Results</h1>
-      <p>Your score: {score} / {quiz.questions.reduce((acc: number, q: any) => acc + (q.points || 1), 0)}</p>
+    <div className="container mt-4">
+    <h1 className="fs-3 fw-bold text-primary mb-4">{quiz.title} - Attempt Results</h1>
+      <p className="fs-5 text-dark">Your score: {score} / {quiz.questions.reduce((acc: number, q: any) => acc + (q.points || 1), 0)}</p>
       {quiz.questions.map((question: any) => {
         let QuestionComponent = null;
         const { isCorrect } = getQuestionResult(question._id); // Get result for each question
@@ -152,17 +152,17 @@ function QuizAttemptResultsScreen() {
         const userAnswer = userAnswers.find((ans: any) => ans.questionId === question._id);
 
         return QuestionComponent && (
-          <div key={question._id} className={`result-container ${isCorrect ? 'bg-success' : 'bg-danger'}`}>
+      <div key={question._id} className={`card mb-4 rounded p-3 ${isCorrect ? 'border border-success shadow' : 'border border-danger shadow'}`}>
             <QuestionComponent
               question={question}
               answer={userAnswer ? userAnswer.answer : ''}
               isCorrect={isCorrect}
             />
             <div className="card-footer">
-              <h6>{isCorrect ? 'Correct!' : 'Wrong Answer!'}</h6>
+              <h6 className="fs-5 fw-bold">{isCorrect ? 'Correct!' : 'Wrong Answer!'}</h6>
               <h6>Your Answer: {userAnswer ? userAnswer.answer : 'N/A'}</h6>
               {showCorrectAnswer && !isCorrect && (
-              <div className="correct-answer">
+              <div className="correct-answer mt-2">
                 <h6>Correct Answer(s): {correctAnswers[question._id]}</h6>
               </div>
             )}
@@ -171,7 +171,7 @@ function QuizAttemptResultsScreen() {
         );
       })}
       <div className="mt-4">
-        <h5>Attempt Timestamp: {new Date(timestamp).toLocaleString()}</h5>
+        <h5 className="fs-5 text-black">Attempt Timestamp: {new Date(timestamp).toLocaleString()}</h5>
       </div>
     </div>
   );

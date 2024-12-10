@@ -148,30 +148,16 @@ export default function QuestionEditor({ quizDetails, setQuizDetails } : any) {
   };
 
   return (
-    <div>
-      {/* Button to initialize adding a new question */}
-      <button onClick={addQuestion} className="btn btn-primary mb-3">
-        Add Question
-      </button>
-      <h4>Total Points: {quizDetails.questions.reduce((acc: number, question: any) => acc + (question.points || 0), 0)}</h4>
-
-      {showNewQuestionEditor && (
-      <>
-        <select value={newQuestion.type} onChange={handleTypeChange} className="form-control mb-3">
-          <option value="multipleChoice">Multiple Choice</option>
-          <option value="trueFalse">True/False</option>
-          <option value="fillInBlanks">Fill in the Blanks</option>
-        </select>
-
-        {renderEditor(newQuestion)}
-      </>
-    )}
-
-      <h4>Existing Questions</h4>
-      {/* Render all the existing questions with their respective editors */}
+    <div className="container">
+    <h4 className="text-black font-weight-bold mb-4">Total Points: {quizDetails.questions.reduce((acc: number, question: any) => acc + (question.points || 0), 0)}</h4>
+    <br/>
+    <h4 className="bg-danger rounded text-white p-3 rounded-lg mb-4">
+      Quiz Questions
+    </h4>
+      {/* Render all the existing questions */}
       {quizDetails.questions.map((question: any, index: number) => (
-        <div key={index} style={{ marginBottom: '20px' }}>
-          <h5>Question {index + 1}</h5>
+        <div key={index} className="card mb-3 p-3">
+          <h5 className="font-weight-bold text-secondary">Question {index + 1}</h5>
 
           {/* Dropdown for changing the type of an existing question */}
           <select
@@ -182,17 +168,38 @@ export default function QuestionEditor({ quizDetails, setQuizDetails } : any) {
               updatedQuestions[index] = { ...updatedQuestions[index], type: newType };
               setQuizDetails((prev: any) => ({ ...prev, questions: updatedQuestions }));
             }}
-            className="form-control mb-3"
+            className="form-select mb-3"
           >
             <option value="multipleChoice">Multiple Choice</option>
             <option value="trueFalse">True/False</option>
             <option value="fillInBlanks">Fill in the Blanks</option>
           </select>
-
+  
           {/* Render the appropriate editor for the existing question */}
           {renderEditor(question, index)}
         </div>
       ))}
+  
+      {/* Temporary question preview container */}
+      {showNewQuestionEditor && (
+        <div className="card mb-3 p-3" style={{ backgroundColor: '#f5c6cb', border: '1px solid #f5c6cb' }}>
+        <h5 className="font-weight-bold">This is a preview question, edit and save it.</h5>
+  
+          <select value={newQuestion.type} onChange={handleTypeChange} className="form-select mb-3">
+            <option value="multipleChoice">Multiple Choice</option>
+            <option value="trueFalse">True/False</option>
+            <option value="fillInBlanks">Fill in the Blanks</option>
+          </select>
+  
+          {renderEditor(newQuestion)}
+        </div>
+      )}
+  
+      {/* Button to initialize adding a new question */}
+      <button onClick={addQuestion} className="btn btn-success mb-3">
+        Add Question
+      </button>
     </div>
   );
+  
 }
