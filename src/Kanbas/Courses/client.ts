@@ -50,16 +50,12 @@ export const getEnrollments = async () => {
   return response.data;
 };
 
-export const createAssignmentForCourse = async (courseId: string, assignment: any) => {
-  const response = await axios.post(
-    `${COURSES_API}/${courseId}/assignments`,
-    assignment
-  );
+export const createAssignmentUnderCourse = async (courseId: string, assignment: any) => {
+  const response = await axios.post(`${COURSES_API}/${courseId}/assignments`, assignment);
   return response.data;
 };
 
-export const findAssignmentForCourse = async (courseId: string) => {
-  const response = await axios
-    .get(`${COURSES_API}/${courseId}/assignments`);
+export const getAssignmentsForCourse = async (courseId: string) => {
+  const response = await axios.get(`${COURSES_API}/${courseId}/assignments`);
   return response.data;
 };
