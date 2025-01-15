@@ -43,15 +43,9 @@
 ---
 
 ### **Technologies Used** ⚙️
-- **Frontend:**  
-  ![React](https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg) React.js  
-  ![Redux](https://upload.wikimedia.org/wikipedia/commons/6/63/Redux.png) Redux  
-  HTML5, CSS3
-- **Backend:**  
-  ![Node.js](https://upload.wikimedia.org/wikipedia/commons/6/64/Node.js_logo_2015.svg) Node.js  
-  ![Express.js](https://upload.wikimedia.org/wikipedia/commons/6/64/Node.js_logo_2015.svg) Express.js
-- **Database:**  
-  ![MongoDB](https://upload.wikimedia.org/wikipedia/commons/9/93/MongoDB_Logo.svg) MongoDB
+- **Frontend:** React.js (TypeScript), Redux, HTML5, CSS, Bootstrap
+- **Backend:** Node.js, Express.js (JavaScript)
+- **Database:** MongoDB
 
 ---
 
