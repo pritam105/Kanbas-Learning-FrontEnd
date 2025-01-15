@@ -1,9 +1,9 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 
 export default function CoursesNavigation() {
-  const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades", "People"];
   const { pathname } = useLocation();
   const { cid } = useParams();
+  const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades", "People"];
 
   return (
     <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0 d-none d-sm-block">

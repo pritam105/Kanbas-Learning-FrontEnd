@@ -8,6 +8,11 @@ import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
 import PeopleTable from "./People/table";
 import { useEffect, useState } from "react";
 import * as courseClient from "../Courses/client";
+import Quizzes from "./Quizzes";
+import QuizEditor from "./Quizzes/QuizEditor";
+import QuizDetails from "./Quizzes/QuizDetails";
+import QuizPreviewScreen from "./Quizzes/QuizPreview";
+import QuizAttemptResultsScreen from "./Quizzes/QuizAttemptResultsScreen";
 
 export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
@@ -42,10 +47,14 @@ export default function Courses({ courses }: { courses: any[]; }) {
             <Route path="Modules" element={<Modules/>} />
             <Route path="Piazza" element={<h3>Piazza</h3>}/>
             <Route path="Zoom" element={<h3>Zoom</h3>}/>
-            <Route path="Quizzes" element={<h3>Quizzes</h3>} />
             <Route path="Grades" element={<h3>Grades</h3>} />
             <Route path="Assignments" element={<Assignments/>} />
             <Route path="Assignments/:aid" element={<AssignmentEditor/>} />
+            <Route path="Quizzes" element={<Quizzes />} />
+            <Route path="Quizzes/:qid" element={<QuizEditor />} />
+            <Route path="Quizzes/:qid/Submission" element={<QuizAttemptResultsScreen />} />
+            <Route path="Quizzes/Details/:qid" element={<QuizDetails />} />
+            <Route path="Quizzes/Preview/:qid" element={<QuizPreviewScreen />} />
             <Route path="People" element={<PeopleTable users={users} />} />
           </Routes>
         </div>
