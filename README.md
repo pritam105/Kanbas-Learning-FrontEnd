@@ -1,6 +1,6 @@
 # Kanbas Learning (Canvas Clone) 📚🎓
 
-**End-To-End Deployed Application:** [Kanbas Learning](https://quizzes--kanbas-react-web-app-f24.netlify.app/#/Kanbas)
+**End-To-End Deployed Application:** [Kanbas Learning](https://kanbas-react-web-app-f24.netlify.app/#/Kanbas)
 
 ### **Note:** ⚠️
 1) Please give it a few minutes to load as the backend server may take some time to initialize. You might see a blank white screen for up to 30 seconds.
